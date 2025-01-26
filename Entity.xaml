@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="HexLoom.Entity"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Border
+        Padding="0,0"
+        Stroke="#947Be3"
+        StrokeShape="RoundRectangle 5, 5, 5, 5"
+        StrokeThickness="2">
+
+        <Grid ColumnDefinitions=".05*, .95*" RowDefinitions="*, *">
+
+            <Grid
+                x:Name="ContentBase"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                Background="#333364"
+                ColumnDefinitions=".05*, .05*, .266*, .266*, .266*, .1*"
+                RowDefinitions="*">
+
+                <Image
+                    x:Name="DragHandle"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    HeightRequest="16"
+                    HorizontalOptions="Center"
+                    Source="grab.png"
+                    VerticalOptions="Center"
+                    WidthRequest="16">
+                    <Image.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="onPanUpdated" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <CheckBox
+                    x:Name="ApplyCheckbox"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    BackgroundColor="Gray"
+                    HeightRequest="24"
+                    MinimumHeightRequest="24"
+                    MinimumWidthRequest="24"
+                    WidthRequest="24"
+                    Color="Gray" />
+
+                <Entry
+                    x:Name="EntryItemName"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    FontSize="11"
+                    HeightRequest="20"
+                    HorizontalOptions="FillAndExpand"
+                    MinimumHeightRequest="20"
+                    Placeholder="Item Name"
+                    VerticalOptions="Center" />
+
+                <Entry
+                    x:Name="EntryItemOffset"
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    FontSize="11"
+                    HeightRequest="20"
+                    MinimumHeightRequest="20"
+                    Placeholder="Offset" />
+
+                <Picker
+                    x:Name="PrimaryTypePicker"
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    FontSize="11"
+                    HeightRequest="20"
+                    MinimumHeightRequest="20"
+                    SelectedIndex="0"
+                    SelectedIndexChanged="onPrimaryTypeIndexChanged"
+                    SelectedItem="0">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}" />
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <Button
+                    x:Name="ButtonDelete"
+                    Grid.Row="0"
+                    Grid.Column="5"
+                    Clicked="onDeleteClicked"
+                    HeightRequest="20"
+                    MinimumHeightRequest="5"
+                    Text="X"
+                    TextColor="{StaticResource Nope}"
+                    WidthRequest="10" />
+            </Grid>
+
+            <Grid
+                x:Name="ContentValue"
+                Grid.Row="1"
+                Grid.Column="1"
+                Background="#336364"
+                ColumnDefinitions=".25*, .75*"
+                RowDefinitions="*">
+
+                <Picker
+                    x:Name="SecondaryTypePicker"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    FontSize="11"
+                    HeightRequest="20"
+                    MinimumHeightRequest="20"
+                    SelectedIndex="0"
+                    SelectedItem="0">
+
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}" />
+                    </Picker.ItemsSource>
+
+                </Picker>
+
+                <Entry
+                    x:Name="EntryItemValueText"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="11"
+                    HeightRequest="20"
+                    MinimumHeightRequest="20"
+                    Placeholder="Value" />
+
+            </Grid>
+
+        </Grid>
+
+    </Border>
+
+</ContentView>
