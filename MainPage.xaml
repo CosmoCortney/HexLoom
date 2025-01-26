@@ -2,20 +2,58 @@
 <ContentPage
     x:Class="HexLoom.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:HexLoom">
 
-    <Grid ColumnDefinitions=".5*, Auto, .5*" RowDefinitions="*">
+    <Grid
+        x:Name="OuterGrid"
+        ColumnDefinitions=".5*, Auto, .5*"
+        RowDefinitions="*">
 
-        <ContentView
+        <Grid
+            x:Name="GroupsGrid"
             Grid.Row="0"
             Grid.RowSpan="3"
-            Grid.Column="0">
+            Grid.Column="0"
+            ColumnDefinitions="0.333*, 0.333*, 0.333*"
+            RowDefinitions="Auto, .95*">
 
-            <Label Text="Entities" TextColor="{StaticResource Text}" />
+            <Label
+                Grid.Row="0"
+                Grid.Column="00"
+                Text="Entities"
+                TextColor="{StaticResource LoomHexTextColor}" />
 
-        </ContentView>
+            <Button
+                x:Name="ButtonAddGroup"
+                Grid.Row="0"
+                Grid.Column="1"
+                Clicked="onAddGroupClicked"
+                HorizontalOptions="Center"
+                Text="Add Group"
+                TextColor="{StaticResource LoomHexTextColor}"
+                VerticalOptions="Center" />
+
+            <ScrollView
+                Grid.Row="1"
+                Grid.Column="0"
+                Grid.ColumnSpan="3"
+                BackgroundColor="#444444">
+
+                <VerticalStackLayout
+                    x:Name="EntityGroupStack"
+                    Padding="10"
+                    Spacing="10">
+
+
+                    <!--  Group items are added during runtime  -->
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
 
         <BoxView
+            x:Name="MainFramesSeparator"
             Grid.Row="0"
             Grid.Column="1"
             BackgroundColor="{StaticResource FrameBorder}"
@@ -23,6 +61,7 @@
             WidthRequest="2" />
 
         <Grid
+            x:Name="HexViewGrid"
             Grid.Row="0"
             Grid.Column="2"
             ColumnDefinitions=".5*, Auto, .25*, Auto, .25*"
@@ -33,7 +72,7 @@
                 Grid.Row="0"
                 Grid.Column="0">
 
-                <Label Text="Hex Original" TextColor="{StaticResource Text}" />
+                <Label Text="Hex Original" TextColor="{StaticResource LoomHexTextColor}" />
             </ContentView>
 
 
@@ -46,7 +85,7 @@
                     x:Name="EncodingPicker"
                     SelectedIndex="0"
                     SelectedItem="0"
-                    TextColor="{StaticResource Text}">
+                    TextColor="{StaticResource LoomHexTextColor}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>ASCII</x:String>
@@ -61,14 +100,12 @@
                 </Picker>
             </ContentView>
 
-
-
             <ContentView
                 x:Name="HeaderNumeralsOriginal"
                 Grid.Row="0"
                 Grid.Column="4">
 
-                <Label Text="Numerals" TextColor="{StaticResource Text}" />
+                <Label Text="Numerals" TextColor="{StaticResource LoomHexTextColor}" />
             </ContentView>
 
             <BoxView
@@ -124,7 +161,7 @@
                 Grid.Row="4"
                 Grid.Column="0">
 
-                <Label Text="Hex Edited" TextColor="{StaticResource Text}" />
+                <Label Text="Hex Edited" TextColor="{StaticResource LoomHexTextColor}" />
             </ContentView>
 
 
