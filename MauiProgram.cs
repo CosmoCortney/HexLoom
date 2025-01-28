@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace HexLoom
 {
@@ -14,6 +15,11 @@ namespace HexLoom
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            string docsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\HexLoom";
+
+            if (!System.IO.Directory.Exists(docsDir))
+                System.IO.Directory.CreateDirectory(docsDir);
 
 #if DEBUG
     		builder.Logging.AddDebug();
