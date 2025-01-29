@@ -5,6 +5,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:HexLoom">
 
+
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="File">
+            <MenuFlyoutItem
+                x:Name="MenuItemNewProject"
+                Clicked="onNewProjectMenuItemClicked"
+                Text="New Project" />
+            <MenuFlyoutItem
+                x:Name="MenuItemChangeSettings"
+                Clicked="onChangeSettingsMenuItemClicked"
+                Text="Project Settings" />
+            <MenuFlyoutItem
+                x:Name="MenuItemSaveChanges"
+                Text="Save Changes" />
+            <MenuFlyoutItem x:Name="MenuItemOpenProject" Text="Open Project" />
+            <MenuFlyoutItem x:Name="MenuItemGenerate" Text="Generate Output File" />
+            <MenuFlyoutItem x:Name="MenuItemCloseProject" Text="Close Project" />
+
+        </MenuBarItem>
+
+    </ContentPage.MenuBarItems>
+
     <Grid
         x:Name="OuterGrid"
         ColumnDefinitions=".5*, Auto, .5*"

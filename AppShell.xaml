@@ -6,10 +6,9 @@
     xmlns:local="clr-namespace:HexLoom"
     Title="HexLoom"
     Shell.FlyoutBehavior="Disabled"
-    Shell.NavBarIsVisible="False">
+    Shell.NavBarIsVisible="True">
 
     <ShellContent
-        Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 </Shell>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="HexLoom.NewProjectPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Enter Text">
+
+    <Grid
+        Padding="15"
+        ColumnDefinitions=".125*, .125*, .25*, .25*, .25*"
+        RowDefinitions="Auto, Auto, Auto, Auto, Auto">
+        <Label
+            Grid.Row="0"
+            Grid.Column="0"
+            Text="Project Name:"
+            VerticalOptions="Center" />
+        <Entry
+            x:Name="ProjectName"
+            Grid.Row="0"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Placeholder="Project Name" />
+        <Label
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Input Binary:"
+            VerticalOptions="Center" />
+        <Button
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="20"
+            Clicked="getInputFilePath"
+            Text="Browse" />
+        <Entry
+            x:Name="InputBinary"
+            Grid.Row="1"
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            TextChanged="onOInputPathTextChanged"
+            HeightRequest="10"
+            Placeholder="Input Binary File" />
+        <Label
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="Output Binary:"
+            VerticalOptions="Center" />
+        <Button
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="20"
+            Clicked="getOutputFilePath"
+            HeightRequest="10"
+            Text="Browse" />
+        <Entry
+            x:Name="OutputBinary"
+            Grid.Row="2"
+            Grid.Column="2"
+            Grid.ColumnSpan="3"
+            HeightRequest="10"
+            Placeholder="Output Binary File"
+            TextChanged="onOutputPathTextChanged" />
+        <Label
+            Grid.Row="3"
+            Grid.Column="0"
+            Text="Base Address (hex):"
+            VerticalOptions="Center" />
+        <Entry
+            x:Name="BaseAddess"
+            Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="4"
+            Text="0" />
+        <Button
+            Grid.Row="4"
+            Grid.Column="3"
+            Margin="20"
+            Clicked="onCancelButtonClicked"
+            Text="Cancel" />
+        <Button
+            Grid.Row="4"
+            Grid.Column="4"
+            Margin="20"
+            Clicked="onOkButtonClicked"
+            Text="Okay" />
+
+    </Grid>
+
+
+
+
+</ContentPage>
