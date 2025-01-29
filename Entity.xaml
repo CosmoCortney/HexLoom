@@ -18,8 +18,8 @@
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
                 Background="#333364"
-                ColumnDefinitions=".05*, .05*, .266*, .266*, .266*, .1*"
-                RowDefinitions="*">
+                ColumnDefinitions=".05*, .075*, .264*, .266*, .266*, .1*"
+                RowDefinitions="22">
 
                 <Image
                     x:Name="DragHandle"
@@ -38,13 +38,7 @@
                 <CheckBox
                     x:Name="ApplyCheckbox"
                     Grid.Row="0"
-                    Grid.Column="1"
-                    BackgroundColor="Gray"
-                    HeightRequest="24"
-                    MinimumHeightRequest="24"
-                    MinimumWidthRequest="24"
-                    WidthRequest="24"
-                    Color="Gray" />
+                    Grid.Column="1" />
 
                 <Entry
                     x:Name="EntryItemName"
@@ -99,7 +93,7 @@
                 Grid.Column="1"
                 Background="#336364"
                 ColumnDefinitions=".25*, .75*"
-                RowDefinitions="*">
+                RowDefinitions="22">
 
                 <Picker
                     x:Name="SecondaryTypePicker"
