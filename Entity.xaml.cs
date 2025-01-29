@@ -198,6 +198,24 @@ namespace HexLoom
                 parentStack.Children.Remove(this);
         }
 
+        private void onSecondaryTypeIndexChanged(object sender, EventArgs e)
+        {
+            Int32 primaryType = ((PickerItem)PrimaryTypePicker.SelectedItem).Id;
+            EntryItemValueBool.IsVisible = false;
+            EntryItemValueText.IsVisible = true;
+
+            if (primaryType != (Int32)PrimaryTypes.PRIMITIVE)
+                return;
+
+            Int32 secondaryType = ((PickerItem)SecondaryTypePicker.SelectedItem).Id;
+
+            if(secondaryType == (Int32)PrimitiveTypes.BOOL)
+            {
+                EntryItemValueText.IsVisible = false;
+                EntryItemValueBool.IsVisible = true;
+            }
+        }
+
         private void onPrimaryTypeIndexChanged(object sender, EventArgs e)
         {
             setupSecondaryDatatypePicker(PrimaryTypePicker.SelectedIndex);

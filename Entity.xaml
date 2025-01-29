@@ -109,6 +109,7 @@
                     HeightRequest="20"
                     MinimumHeightRequest="20"
                     SelectedIndex="0"
+                    SelectedIndexChanged="onSecondaryTypeIndexChanged"
                     SelectedItem="0">
 
                     <Picker.ItemsSource>
@@ -125,6 +126,14 @@
                     HeightRequest="20"
                     MinimumHeightRequest="20"
                     Placeholder="Value" />
+
+                <CheckBox
+                    x:Name="EntryItemValueBool"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HeightRequest="20"
+                    IsVisible="False"
+                    MinimumHeightRequest="20" />
 
             </Grid>
 
