@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -109,6 +109,14 @@ namespace HexLoom
             setWidgetPaddings();
             setupSecondaryDatatypePicker((Int32)PrimaryTypes.PRIMITIVE);
         }
+
+        public bool _Apply => this.ApplyCheckbox.IsChecked;
+        public Int32 _PrimaryType => ((PickerItem)PrimaryTypePicker.SelectedItem).Id;
+        public Int32 _SecondaryType => ((PickerItem)SecondaryTypePicker.SelectedItem).Id;
+        public UInt64 _EntityOffset { get; private set; }
+        public string _EntityName => this.EntryItemName.Text;
+        public string _EntityValue => this.EntryItemValueText.Text;
+        public bool _EntityValueBool => this.EntryItemValueBool.IsChecked;
 
         private void onOffsetTextChanged(object sender, EventArgs e)
         {

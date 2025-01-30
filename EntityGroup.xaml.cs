@@ -13,9 +13,11 @@ namespace HexLoom
             InitializeComponent();
         }
 
+        public VerticalStackLayout _EntityStack => this.EntityStack;
+        public string _Name => this.EntryGroupName.Text;
         private void onAddItemClicked(object sender, EventArgs e)
         {
-            EntityStack.Children.Add(new Entity());
+            this.EntityStack.Children.Add(new Entity());
         }
 
         private void onPanUpdated(object sender, PanUpdatedEventArgs e)
