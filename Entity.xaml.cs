@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -108,6 +108,18 @@ namespace HexLoom
             setupPirmaryTypePicker();
             setWidgetPaddings();
             setupSecondaryDatatypePicker((Int32)PrimaryTypes.PRIMITIVE);
+        }
+
+        private void onOffsetTextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                _EntityOffset = Convert.ToUInt64(this.EntryItemOffset.Text, 16);
+            }
+            catch (Exception)
+            {
+                _EntityOffset = 0;
+            }
         }
 
         private void setWidgetPaddings()
