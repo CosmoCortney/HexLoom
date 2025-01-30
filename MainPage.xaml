@@ -18,6 +18,7 @@
                 Text="Project Settings" />
             <MenuFlyoutItem
                 x:Name="MenuItemSaveChanges"
+                Clicked="onSaveProjectClocked"
                 Text="Save Changes" />
             <MenuFlyoutItem x:Name="MenuItemOpenProject" Text="Open Project" />
             <MenuFlyoutItem x:Name="MenuItemGenerate" Text="Generate Output File" />
