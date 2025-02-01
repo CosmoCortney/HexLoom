@@ -5,11 +5,7 @@
     <ActiveDebugFramework>net9.0-windows10.0.19041.0</ActiveDebugFramework>
     <ActiveDebugProfile>Windows Machine</ActiveDebugProfile>
   </PropertyGroup>
-  <ItemGroup>
-    <MauiXaml Update="Entity.xaml">
-      <SubType>Designer</SubType>
-    </MauiXaml>
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Update="App.xaml">
       <SubType>Designer</SubType>
