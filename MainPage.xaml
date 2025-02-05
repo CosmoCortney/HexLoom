@@ -3,7 +3,6 @@
     x:Class="HexLoom.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:HexEditor="clr-namespace:HexEditor;assembly=HexEditor"
     xmlns:local="clr-namespace:HexLoom">
 
 
@@ -84,13 +83,7 @@
             VerticalOptions="Fill"
             WidthRequest="2" />
 
-
-        <HexEditor:HexEditor Grid.Row="0" Grid.Column="2" />
-        <!--  local:HexView Grid.Row="0" Grid.Column="2" /  -->
-
-
-
-        <!--Grid
+        <Grid
             x:Name="HexViewGrid"
             Grid.Row="0"
             Grid.Column="2"
@@ -234,6 +227,6 @@
 
 
 
-        </Grid-->
+        </Grid>
     </Grid>
 </ContentPage>
