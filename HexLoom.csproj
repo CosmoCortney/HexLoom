@@ -72,6 +72,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Reference Include="HexEditor">
+			<HintPath></HintPath>
+		</Reference>
+	</ItemGroup>
+
+
+
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<Reference Include="HexEditor">
+			<HintPath>..\MAUI-Hex-Editor\bin\Debug\net9.0-windows10.0.19041.0\HexEditor.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<Reference Include="HexEditor">
+			<HintPath>..\MAUI-Hex-Editor\bin\Release\net9.0-windows10.0.19041.0\HexEditor.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Entity.xaml.cs">
 	    <DependentUpon>Entity.xaml</DependentUpon>
 	  </Compile>
