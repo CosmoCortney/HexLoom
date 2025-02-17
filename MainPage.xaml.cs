@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 
@@ -21,6 +21,8 @@ namespace HexLoom
         private ProjectSettings _projectSettings;
         private bool _projectOpen = false;
         private bool _projectChanged = false;
+        private Byte[] _binaryDataOriginal;
+        private Byte[] _binaryDataEdited;
 
         private async void onNewProjectMenuItemClicked(object sender, EventArgs e)
         {
@@ -55,6 +57,9 @@ namespace HexLoom
 
             if (sender is Page page)
                 page.Disappearing -= OnNewProjectPageDisappearing;
+
+            if ((_projectOpen && _projectChanged))
+                loadBinary();
         }
 
         private void onSaveProjectClocked(object sender, EventArgs e)
@@ -107,6 +112,46 @@ namespace HexLoom
             project["Groups"] = groupArr;
             System.IO.File.WriteAllText(_projectSettings.ProjectJsonPath, project.ToString());
             _projectChanged = false;
+        }
+
+        private bool loadBinary()
+        {
+            _binaryDataOriginal = new Byte[0];
+            _binaryDataEdited = new Byte[0];
+
+            if (!_projectOpen)
+                return false;
+
+            _binaryDataOriginal = System.IO.File.ReadAllBytes(_projectSettings.InputFilePath);
+
+            if (_binaryDataOriginal == null)
+                return false;
+
+            if (_binaryDataOriginal.Length == 0)
+                return false;
+
+            _binaryDataEdited = _binaryDataOriginal;
+            setHexEditors();
+            return true;
+        }
+
+        private void setHexEditors()
+        {
+            if (!_projectOpen)
+                return;
+
+            if (_binaryDataOriginal == null || _binaryDataEdited == null)
+                return;
+
+            if (_binaryDataOriginal.Length == 0 || _binaryDataEdited.Length == 0)
+                return;
+
+            HexEditorOriginal.SetBinaryData(_binaryDataOriginal);
+            HexEditorOriginal.SetBaseAddress(_projectSettings.BaseAddress);
+            HexEditorOriginal._IsBigEndian = _projectSettings.IsBigEndian;
+            HexEditorEdited.SetBinaryData(_binaryDataEdited);
+            HexEditorEdited.SetBaseAddress(_projectSettings.BaseAddress);
+            HexEditorEdited._IsBigEndian = _projectSettings.IsBigEndian;
         }
     }
 }

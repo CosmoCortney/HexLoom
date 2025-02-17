@@ -31,7 +31,7 @@
 
     <Grid
         x:Name="OuterGrid"
-        ColumnDefinitions=".5*, Auto, .5*"
+        ColumnDefinitions=".3*, Auto, Auto, Auto, Auto"
         RowDefinitions="*">
 
         <Grid
@@ -84,155 +84,26 @@
             VerticalOptions="Fill"
             WidthRequest="2" />
 
-        <custom:HexEditor x:Name="HexEditor"
-Grid.Row="0"
-Grid.Column="2"/>
-
-
-        <!-- Grid
-            x:Name="HexViewGrid"
+        <custom:HexEditor
+            x:Name="HexEditorOriginal"
             Grid.Row="0"
             Grid.Column="2"
-            ColumnDefinitions=".5*, Auto, .25*, Auto, .25*"
-            RowDefinitions="Auto, Auto, .5*, Auto, Auto, Auto, .5*">
+            _FontSize="12" />
 
-            <ContentView
-                x:Name="HeaderHexOriginal"
-                Grid.Row="0"
-                Grid.Column="0">
+        <BoxView
+            x:Name="MainFramesSeparator2"
+            Grid.Row="0"
+            Grid.Column="3"
+            BackgroundColor="{StaticResource FrameBorder}"
+            VerticalOptions="Fill"
+            WidthRequest="2" />
 
-                <Label Text="Hex Original" TextColor="{StaticResource LoomHexTextColor}" />
-            </ContentView>
+        <custom:HexEditor
+            x:Name="HexEditorEdited"
+            Grid.Row="0"
+            Grid.Column="4"
+            _FontSize="12"
+            _ShowAddressArea="False" />
 
-
-            <ContentView
-                x:Name="HeaderEncodingSelect"
-                Grid.Row="0"
-                Grid.Column="2">
-
-                <Picker
-                    x:Name="EncodingPicker"
-                    SelectedIndex="0"
-                    SelectedItem="0"
-                    TextColor="{StaticResource LoomHexTextColor}">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>ASCII</x:String>
-                            <x:String>UTF-8</x:String>
-                            <x:String>UTF-16 Little Endian</x:String>
-                            <x:String>UTF-16 Big Endian</x:String>
-                            <x:String>UTF-32 Little Endian</x:String>
-                            <x:String>UTF-32 Big Endian</x:String>
-                            <x:String>Shift-Jis</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
-            </ContentView>
-
-            <ContentView
-                x:Name="HeaderNumeralsOriginal"
-                Grid.Row="0"
-                Grid.Column="4">
-
-                <Label Text="Numerals" TextColor="{StaticResource LoomHexTextColor}" />
-            </ContentView>
-
-            <BoxView
-                Grid.Row="1"
-                Grid.Column="0"
-                Grid.ColumnSpan="5"
-                BackgroundColor="{StaticResource SubBorder}"
-                HeightRequest="2"
-                HorizontalOptions="Fill" />
-
-            <ContentView
-                x:Name="HexFieldOriginal"
-                Grid.Row="2"
-                Grid.Column="0" />
-
-            <BoxView
-                Grid.Row="2"
-                Grid.RowSpan="5"
-                Grid.Column="1"
-                BackgroundColor="{StaticResource SubBorder}"
-                VerticalOptions="Fill"
-                WidthRequest="2" />
-
-            <ContentView
-                x:Name="TextFieldOriginal"
-                Grid.Row="2"
-                Grid.Column="2" />
-
-            <BoxView
-                Grid.Row="2"
-                Grid.RowSpan="5"
-                Grid.Column="3"
-                BackgroundColor="{StaticResource SubBorder}"
-                VerticalOptions="Fill"
-                WidthRequest="2" />
-
-
-            <ContentView
-                x:Name="NumeralFieldOriginal"
-                Grid.Row="2"
-                Grid.Column="4" />
-
-            <BoxView
-                Grid.Row="3"
-                Grid.Column="0"
-                Grid.ColumnSpan="5"
-                BackgroundColor="{StaticResource SubBorder}"
-                HeightRequest="2"
-                HorizontalOptions="Fill" />
-
-            <ContentView
-                x:Name="HeaderHexEdited"
-                Grid.Row="4"
-                Grid.Column="0">
-
-                <Label Text="Hex Edited" TextColor="{StaticResource LoomHexTextColor}" />
-            </ContentView>
-
-
-            <ContentView
-                x:Name="HeaderTextEdited"
-                Grid.Row="4"
-                Grid.Column="2" />
-
-
-            <ContentView
-                x:Name="HeaderNumeralsEdited"
-                Grid.Row="4"
-                Grid.Column="4" />
-
-            <BoxView
-                Grid.Row="5"
-                Grid.Column="0"
-                Grid.ColumnSpan="5"
-                BackgroundColor="{StaticResource SubBorder}"
-                HeightRequest="2"
-                HorizontalOptions="Fill" />
-
-
-
-            <ContentView
-                x:Name="HexFieldEdited"
-                Grid.Row="6"
-                Grid.Column="0" />
-
-            <ContentView
-                x:Name="TextFieldEdited"
-                Grid.Row="6"
-                Grid.Column="2" />
-
-            <ContentView
-                x:Name="NumeralFieldEdited"
-                Grid.Row="6"
-                Grid.Column="4" />
-
-
-
-
-        </Grid-->
     </Grid>
 </ContentPage>

@@ -17,6 +17,7 @@ namespace HexLoom
         public string OutputFilePath { get; set; }
         public UInt64 BaseAddress { get; set; }
         public string ProjectJsonPath { get; set; }
+        public bool IsBigEndian { get; set; }
 
         public bool IsValid()
         {
