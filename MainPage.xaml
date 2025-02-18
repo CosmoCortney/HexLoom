@@ -58,6 +58,16 @@
                 TextColor="{StaticResource LoomHexTextColor}"
                 VerticalOptions="Center" />
 
+            <Button
+                x:Name="ButtonApply"
+                Grid.Row="0"
+                Grid.Column="2"
+                Clicked="onApplyClicked"
+                HorizontalOptions="Center"
+                Text="Apply"
+                TextColor="{StaticResource LoomHexTextColor}"
+                VerticalOptions="Center" />
+
             <ScrollView
                 Grid.Row="1"
                 Grid.Column="0"

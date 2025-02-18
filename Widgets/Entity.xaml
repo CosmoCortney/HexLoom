@@ -56,10 +56,10 @@
                     Grid.Row="0"
                     Grid.Column="3"
                     FontSize="11"
-                    TextChanged="onOffsetTextChanged"
                     HeightRequest="20"
                     MinimumHeightRequest="20"
-                    Placeholder="Offset" />
+                    Placeholder="Offset"
+                    TextChanged="onOffsetTextChanged" />
 
                 <Picker
                     x:Name="PrimaryTypePicker"

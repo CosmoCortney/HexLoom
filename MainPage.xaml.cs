@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 
@@ -11,6 +11,7 @@ namespace HexLoom
             InitializeComponent();
             MenuItemNewProject.IsEnabled = true;
             MenuItemChangeSettings.IsEnabled = false;
+            setTestData();
         }
 
         private void onAddGroupClicked(object sender, EventArgs e)
@@ -152,6 +153,246 @@ namespace HexLoom
             HexEditorEdited.SetBinaryData(_binaryDataEdited);
             HexEditorEdited.SetBaseAddress(_projectSettings.BaseAddress);
             HexEditorEdited._IsBigEndian = _projectSettings.IsBigEndian;
+        }
+
+        private void onApplyClicked(object sender, EventArgs e)
+        {
+            applyChanges();
+        }
+
+        private void applyChanges()
+        {
+            foreach (var groupS in EntityGroupStack.Children)
+            {
+                if (groupS is not EntityGroup)
+                    return;
+
+                var entityGroup = groupS as EntityGroup;
+
+                foreach (var entityS in entityGroup._EntityStack.Children)
+                {
+                    if (entityS is not Entity)
+                        return;
+
+                    var entity = entityS as Entity;
+
+                    if (!entity._Apply)
+                        continue;
+
+                    switch(entity._PrimaryType)
+                    {
+                        default:
+                            setPrimitiveValues(entity);
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void setPrimitiveValues(Entity entity)
+        {
+            byte[] value = new byte[0];
+
+            switch((Int32)entity._SecondaryType)
+            {
+                case (Int32)PrimitiveTypes.SINT8:
+                    value = new byte[1];
+                    value[0] = (byte)convertStringToIntegralType<sbyte>(entity._EntityValue);
+                    break;
+                case (Int32)PrimitiveTypes.UINT8:
+                    value = new byte[1];
+                    value[0] = (byte)convertStringToIntegralType<byte>(entity._EntityValue);
+                    break;
+                case (Int32)PrimitiveTypes.SINT16:
+                {
+                    value = new byte[2];
+                    Int16 temp = 0;
+                    temp = convertStringToIntegralType<Int16>(entity._EntityValue);
+                    value[0] = (byte)(temp & 0xFF);
+                    value[1] = (byte)((temp >> 8) & 0xFF);
+                } break;
+                case (Int32)PrimitiveTypes.UINT16:
+                {
+                    value = new byte[2];
+                    UInt16 temp = 0;
+                    temp = convertStringToIntegralType<UInt16>(entity._EntityValue);
+                    value[0] = (byte)(temp & 0xFF);
+                    value[1] = (byte)((temp >> 8) & 0xFF);
+                } break;
+                case (Int32)PrimitiveTypes.SINT32:
+                {
+                    value = new byte[4];
+                    Int32 temp = 0;
+                    temp = convertStringToIntegralType<Int32>(entity._EntityValue);
+                    value[0] = (byte)(temp & 0xFF);
+                    value[1] = (byte)((temp >> 8) & 0xFF);
+                    value[2] = (byte)((temp >> 16) & 0xFF);
+                    value[3] = (byte)((temp >> 24) & 0xFF);
+                } break;
+                case (Int32)PrimitiveTypes.UINT32:
+                {
+                    value = new byte[4];
+                    UInt32 temp = 0;
+                    temp = convertStringToIntegralType<UInt32>(entity._EntityValue);
+                    value[0] = (byte)(temp & 0xFF);
+                    value[1] = (byte)((temp >> 8) & 0xFF);
+                    value[2] = (byte)((temp >> 16) & 0xFF);
+                    value[3] = (byte)((temp >> 24) & 0xFF);
+                } break;
+                case (Int32)PrimitiveTypes.SINT64:
+                {
+                    value = new byte[8];
+                    Int64 temp = 0;
+                    temp = convertStringToIntegralType<Int64>(entity._EntityValue);
+                    value[0] = (byte)(temp & 0xFF);
+                    value[1] = (byte)((temp >> 8) & 0xFF);
+                    value[2] = (byte)((temp >> 16) & 0xFF);
+                    value[3] = (byte)((temp >> 24) & 0xFF);
+                    value[4] = (byte)((temp >> 32) & 0xFF);
+                    value[5] = (byte)((temp >> 40) & 0xFF);
+                    value[6] = (byte)((temp >> 48) & 0xFF);
+                    value[7] = (byte)((temp >> 56) & 0xFF);
+                } break;
+                case (Int32)PrimitiveTypes.UINT64:
+                {
+                    value = new byte[8];
+                    UInt64 temp = 0;
+                    temp = convertStringToIntegralType<UInt64>(entity._EntityValue);
+                    value[0] = (byte)(temp & 0xFF);
+                    value[1] = (byte)((temp >> 8) & 0xFF);
+                    value[2] = (byte)((temp >> 16) & 0xFF);
+                    value[3] = (byte)((temp >> 24) & 0xFF);
+                    value[4] = (byte)((temp >> 32) & 0xFF);
+                    value[5] = (byte)((temp >> 40) & 0xFF);
+                    value[6] = (byte)((temp >> 48) & 0xFF);
+                    value[7] = (byte)((temp >> 56) & 0xFF);
+                } break;
+                case (Int32)PrimitiveTypes.FLOAT:
+                {
+                    float tempf = 0;
+                    tempf = convertStringToFloatType<float>(entity._EntityValue);
+                    value = BitConverter.GetBytes(tempf);
+                } break;
+                case (Int32)PrimitiveTypes.DOUBLE:
+                {
+                    double tempf = 0;
+                    tempf = convertStringToFloatType<double>(entity._EntityValue);
+                    value = BitConverter.GetBytes(tempf);
+                } break;
+                default: //bool
+                    value = new byte[1];
+                    value[0] = entity._EntityValueBool ? (byte)1 : (byte)0;
+                break;
+            }
+
+            if(_projectSettings.IsBigEndian)
+                value = byteSwap(value);
+
+            HexEditorEdited.SetBytes(value, entity._EntityOffset);
+        }
+
+        private byte[] byteSwap(byte[] input)
+        {
+            byte[] output = new byte[input.Length];
+
+            for (int i = 0; i < input.Length; ++i)
+                output[i] = input[input.Length - i - 1];
+
+            return output;
+        }
+
+        private static T convertStringToIntegralType<T>(string input) where T : IConvertible
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("Input string cannot be null or empty.");
+
+            Type targetType = typeof(T);
+            Int64 value;
+
+            if (input.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            {
+                value = Convert.ToInt64(input.Substring(2), 16);
+            }
+            else
+            {
+                value = Convert.ToInt64(input, 10);
+            }
+
+            if (targetType == typeof(sbyte))
+                return (T)(object)(sbyte)value;
+            else if (targetType == typeof(byte))
+                return (T)(object)(byte)value;
+            else if (targetType == typeof(Int16))
+                return (T)(object)(short)value;
+            else if (targetType == typeof(UInt16))
+                return (T)(object)(UInt16)value;
+            else if (targetType == typeof(Int32))
+                return (T)(object)(Int32)value;
+            else if (targetType == typeof(UInt32))
+                return (T)(object)(UInt32)value;
+            else if (targetType == typeof(Int64))
+                return (T)(object)value;
+            else if (targetType == typeof(UInt64))
+                return (T)(object)(UInt64)value;
+            else
+                throw new InvalidOperationException($"Unsupported target type: {targetType}");
+        }
+
+        private static T convertStringToFloatType<T>(string input) where T : IConvertible
+        {
+            if (string.IsNullOrEmpty(input))
+                throw new ArgumentException("Input string cannot be null or empty.");
+
+            Type targetType = typeof(T);
+
+            if (input.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            {
+                if (targetType == typeof(float))
+                {
+                    UInt32 intValue = Convert.ToUInt32(input.Substring(2), 16);
+                    float floatValue = BitConverter.ToSingle(BitConverter.GetBytes(intValue), 0);
+                    return (T)(object)floatValue;
+                }
+                else if (targetType == typeof(double))
+                {
+                    UInt64 longValue = Convert.ToUInt64(input.Substring(2), 16);
+                    double doubleValue = BitConverter.ToDouble(BitConverter.GetBytes(longValue), 0);
+                    return (T)(object)doubleValue;
+                }
+                else
+                    throw new InvalidOperationException($"Unsupported target type: {targetType}");
+            }
+            else
+            {
+                input = input.Replace(',', '.');
+                var cultureInfo = System.Globalization.CultureInfo.InvariantCulture;
+                var numberStyles = System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands;
+
+                if (targetType == typeof(float))
+                {
+                    return (T)(object)float.Parse(input, numberStyles, cultureInfo);
+                }
+                else if (targetType == typeof(double))
+                {
+                    return (T)(object)double.Parse(input, numberStyles, cultureInfo);
+                }
+                else
+                    throw new InvalidOperationException($"Unsupported target type: {targetType}");
+            }
+        }
+
+        private void setTestData()
+        {
+            _projectSettings = new ProjectSettings();
+            _projectSettings.ProjectName = "Test Project";
+            _projectSettings.InputFilePath = "C:\\Users\\s_sch\\Documents\\line(jpn)__,lz.rel";
+            _projectSettings.OutputFilePath = "C:\\Users\\s_sch\\Documents\\testEdited.bin";
+            _projectSettings.ProjectJsonPath = "C:\\Users\\s_sch\\Documents\\HexLoom\\Test Project.json";
+            _projectSettings.IsBigEndian = true;
+            _projectSettings.BaseAddress = 0;
+            _projectOpen = true;
+            loadBinary();
+            setHexEditors();
         }
     }
 }
