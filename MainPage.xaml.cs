@@ -63,7 +63,7 @@ namespace HexLoom
                 loadBinary();
         }
 
-        private void onSaveProjectClocked(object sender, EventArgs e)
+        private void onSaveProjectClicked(object sender, EventArgs e)
         {
             if (!_projectOpen || !_projectChanged)
                 return;
@@ -185,7 +185,7 @@ namespace HexLoom
                         {
                             case (Int32)PrimaryTypes.ARRAY:
                                 setArrayValues(entity);
-                                break;
+                            break;
                             default: //PRIMITIVE
                                 setPrimitiveValues(entity);
                             break;
@@ -197,79 +197,6 @@ namespace HexLoom
                         return;
                     }
                 }
-            }
-        }
-
-        private void setArrayValues(Entity entity)
-        {
-            string valueStr = entity._EntityValue.Replace(" ", "");
-            var arrays = parseArray(valueStr);
-            UInt64 offset = entity._EntityOffset;
-            setArrayValuesRecursive(arrays, entity._SecondaryType, ref offset);
-        }
-
-        private void setArrayValuesRecursive(object array, Int32 type, ref UInt64 offset)
-        {
-            if (array is object[] arr)
-            {
-                foreach (var element in arr)
-                {
-                    setArrayValuesRecursive(element, type, ref offset);
-                }
-            }
-            else if (array is string valueStr)
-            {
-                setSinglePrimitiveValue(valueStr, type, offset);
-                offset += (UInt64)getPrimitiveTypeSize(type);
-            }
-        }
-
-        private int getPrimitiveTypeSize(Int32 type)
-        {
-            return type switch
-            {
-                (Int32)PrimitiveTypes.SINT8 => sizeof(sbyte),
-                (Int32)PrimitiveTypes.UINT8 => sizeof(byte),
-                (Int32)PrimitiveTypes.SINT16 => sizeof(Int16),
-                (Int32)PrimitiveTypes.UINT16 => sizeof(UInt16),
-                (Int32)PrimitiveTypes.SINT32 => sizeof(Int32),
-                (Int32)PrimitiveTypes.UINT32 => sizeof(UInt32),
-                (Int32)PrimitiveTypes.SINT64 => sizeof(Int64),
-                (Int32)PrimitiveTypes.UINT64 => sizeof(UInt64),
-                (Int32)PrimitiveTypes.FLOAT => sizeof(float),
-                (Int32)PrimitiveTypes.DOUBLE => sizeof(double),
-                _ => throw new InvalidOperationException($"Unsupported type: {type}"),
-            };
-        }
-
-        private object parseArray(string arrayStr)
-        {
-            if (arrayStr.StartsWith("[") && arrayStr.EndsWith("]"))
-            {
-                arrayStr = arrayStr.Substring(1, arrayStr.Length - 2);
-                var elements = new List<object>();
-                int bracketCount = 0;
-                int startIndex = 0;
-
-                for (int i = 0; i < arrayStr.Length; i++)
-                {
-                    if (arrayStr[i] == '[') bracketCount++;
-                    if (arrayStr[i] == ']') bracketCount--;
-                    if (arrayStr[i] == ',' && bracketCount == 0)
-                    {
-                        elements.Add(parseArray(arrayStr.Substring(startIndex, i - startIndex)));
-                        startIndex = i + 1;
-                    }
-                }
-
-                if (startIndex < arrayStr.Length)
-                    elements.Add(parseArray(arrayStr.Substring(startIndex)));
-
-                return elements.ToArray();
-            }
-            else
-            {
-                return arrayStr.Trim();
             }
         }
 
@@ -292,18 +219,20 @@ namespace HexLoom
             switch (type)
             {
                 case (Int32)PrimitiveTypes.SINT8:
+                {
                     value = new byte[1];
-                    value[0] = (byte)convertStringToIntegralType<sbyte>(valueStr);
-                break;
+                    value[0] = (byte)Helpers.ConvertStringToIntegralType<sbyte>(valueStr);
+                } break;
                 case (Int32)PrimitiveTypes.UINT8:
+                {
                     value = new byte[1];
-                    value[0] = (byte)convertStringToIntegralType<byte>(valueStr);
-                break;
+                value[0] = (byte)Helpers.ConvertStringToIntegralType<byte>(valueStr);
+                } break;
                 case (Int32)PrimitiveTypes.SINT16:
                 {
                     value = new byte[2];
                     Int16 temp = 0;
-                    temp = convertStringToIntegralType<Int16>(valueStr);
+                    temp = Helpers.ConvertStringToIntegralType<Int16>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                 } break;
@@ -311,7 +240,7 @@ namespace HexLoom
                 {
                     value = new byte[2];
                     UInt16 temp = 0;
-                    temp = convertStringToIntegralType<UInt16>(valueStr);
+                    temp = Helpers.ConvertStringToIntegralType<UInt16>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                 } break;
@@ -319,7 +248,7 @@ namespace HexLoom
                 {
                     value = new byte[4];
                     Int32 temp = 0;
-                    temp = convertStringToIntegralType<Int32>(valueStr);
+                    temp = Helpers.ConvertStringToIntegralType<Int32>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -329,7 +258,7 @@ namespace HexLoom
                 {
                     value = new byte[4];
                     UInt32 temp = 0;
-                    temp = convertStringToIntegralType<UInt32>(valueStr);
+                    temp = Helpers.ConvertStringToIntegralType<UInt32>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -339,7 +268,7 @@ namespace HexLoom
                 {
                     value = new byte[8];
                     Int64 temp = 0;
-                    temp = convertStringToIntegralType<Int64>(valueStr);
+                    temp = Helpers.ConvertStringToIntegralType<Int64>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -353,7 +282,7 @@ namespace HexLoom
                 {
                     value = new byte[8];
                     UInt64 temp = 0;
-                    temp = convertStringToIntegralType<UInt64>(valueStr);
+                    temp = Helpers.ConvertStringToIntegralType<UInt64>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -366,114 +295,49 @@ namespace HexLoom
                 case (Int32)PrimitiveTypes.FLOAT:
                 {
                     float tempf = 0;
-                    tempf = convertStringToFloatType<float>(valueStr);
+                    tempf = Helpers.ConvertStringToFloatType<float>(valueStr);
                     value = BitConverter.GetBytes(tempf);
                 } break;
                 case (Int32)PrimitiveTypes.DOUBLE:
                 {
                     double tempf = 0;
-                    tempf = convertStringToFloatType<double>(valueStr);
+                    tempf = Helpers.ConvertStringToFloatType<double>(valueStr);
                     value = BitConverter.GetBytes(tempf);
                 } break;
                 default: //bool
+                {
                     value = new byte[1];
                     value[0] = string.Equals(valueStr, "True", StringComparison.CurrentCultureIgnoreCase) ? (byte)1 : (byte)0;
-                break;
+                } break;
             }
 
             if (_projectSettings.IsBigEndian)
-                value = byteSwap(value);
+                value = Helpers.ByteSwap(value);
 
             HexEditorEdited.SetBytes(value, offset);
         }
 
-        private byte[] byteSwap(byte[] input)
+        private void setArrayValues(Entity entity)
         {
-            byte[] output = new byte[input.Length];
-
-            for (int i = 0; i < input.Length; ++i)
-                output[i] = input[input.Length - i - 1];
-
-            return output;
+            string valueStr = entity._EntityValue.Replace(" ", "");
+            var arrays = Helpers.ParseArray(valueStr);
+            UInt64 offset = entity._EntityOffset;
+            setArrayValuesRecursive(arrays, entity._SecondaryType, ref offset);
         }
 
-        private static T convertStringToIntegralType<T>(string input) where T : IConvertible
+        private void setArrayValuesRecursive(object array, Int32 type, ref UInt64 offset)
         {
-            if (string.IsNullOrEmpty(input))
-                throw new ArgumentException("Input string cannot be null or empty.");
-
-            Type targetType = typeof(T);
-            Int64 value;
-
-            if (input.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            if (array is object[] arr)
             {
-                value = Convert.ToInt64(input.Substring(2), 16);
+                foreach (var element in arr)
+                {
+                    setArrayValuesRecursive(element, type, ref offset);
+                }
             }
-            else
+            else if (array is string valueStr)
             {
-                value = Convert.ToInt64(input, 10);
-            }
-
-            if (targetType == typeof(sbyte))
-                return (T)(object)(sbyte)value;
-            else if (targetType == typeof(byte))
-                return (T)(object)(byte)value;
-            else if (targetType == typeof(Int16))
-                return (T)(object)(short)value;
-            else if (targetType == typeof(UInt16))
-                return (T)(object)(UInt16)value;
-            else if (targetType == typeof(Int32))
-                return (T)(object)(Int32)value;
-            else if (targetType == typeof(UInt32))
-                return (T)(object)(UInt32)value;
-            else if (targetType == typeof(Int64))
-                return (T)(object)value;
-            else if (targetType == typeof(UInt64))
-                return (T)(object)(UInt64)value;
-            else
-                throw new InvalidOperationException($"Unsupported target type: {targetType}");
-        }
-
-        private static T convertStringToFloatType<T>(string input) where T : IConvertible
-        {
-            if (string.IsNullOrEmpty(input))
-                throw new ArgumentException("Input string cannot be null or empty.");
-
-            Type targetType = typeof(T);
-
-            if (input.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-            {
-                if (targetType == typeof(float))
-                {
-                    UInt32 intValue = Convert.ToUInt32(input.Substring(2), 16);
-                    float floatValue = BitConverter.ToSingle(BitConverter.GetBytes(intValue), 0);
-                    return (T)(object)floatValue;
-                }
-                else if (targetType == typeof(double))
-                {
-                    UInt64 longValue = Convert.ToUInt64(input.Substring(2), 16);
-                    double doubleValue = BitConverter.ToDouble(BitConverter.GetBytes(longValue), 0);
-                    return (T)(object)doubleValue;
-                }
-                else
-                    throw new InvalidOperationException($"Unsupported target type: {targetType}");
-            }
-            else
-            {
-                input = input.Replace(',', '.');
-                var cultureInfo = System.Globalization.CultureInfo.InvariantCulture;
-                var numberStyles = System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands;
-
-                if (targetType == typeof(float))
-                {
-                    return (T)(object)float.Parse(input, numberStyles, cultureInfo);
-                }
-                else if (targetType == typeof(double))
-                {
-                    return (T)(object)double.Parse(input, numberStyles, cultureInfo);
-                }
-                else
-                    throw new InvalidOperationException($"Unsupported target type: {targetType}");
+                setSinglePrimitiveValue(valueStr, type, offset);
+                offset += (UInt64)Helpers.GetPrimitiveTypeSize(type);
             }
         }
 

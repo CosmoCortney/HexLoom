@@ -58,11 +58,11 @@ namespace HexLoom
         UINT64,
         FLOAT,
         DOUBLE,
-        BOOL,
+        BOOL/*,
         RGB,
         RGBA,
         RGBF,
-        RGBAF
+        RGBAF*/
     };
 
     enum StringTypes : Int32
@@ -261,11 +261,11 @@ namespace HexLoom
                         new PickerItem { Id = (Int32)ArrayTypes.UINT64, DisplayName = "UInt 64" },
                         new PickerItem { Id = (Int32)ArrayTypes.FLOAT, DisplayName = "Float" },
                         new PickerItem { Id = (Int32)ArrayTypes.DOUBLE, DisplayName = "Double" },
-                        new PickerItem { Id = (Int32)ArrayTypes.BOOL, DisplayName = "Bool" },
+                        new PickerItem { Id = (Int32)ArrayTypes.BOOL, DisplayName = "Bool" }/*,
                         new PickerItem { Id = (Int32)ArrayTypes.RGB, DisplayName = "RGB" },
                         new PickerItem { Id = (Int32)ArrayTypes.RGBA, DisplayName = "RGBA" },
                         new PickerItem { Id = (Int32)ArrayTypes.RGBF, DisplayName = "RGBF" },
-                        new PickerItem { Id = (Int32)ArrayTypes.RGBAF, DisplayName = "RGBAF" }
+                        new PickerItem { Id = (Int32)ArrayTypes.RGBAF, DisplayName = "RGBAF" }*/
                     };
                 } break;
                 case (Int32)PrimaryTypes.COLOR:
