@@ -183,7 +183,10 @@ namespace HexLoom
                     {
                         switch (entity._PrimaryType)
                         {
-                            default:
+                            case (Int32)PrimaryTypes.ARRAY:
+                                setArrayValues(entity);
+                                break;
+                            default: //PRIMITIVE
                                 setPrimitiveValues(entity);
                             break;
                         }
@@ -197,25 +200,110 @@ namespace HexLoom
             }
         }
 
+        private void setArrayValues(Entity entity)
+        {
+            string valueStr = entity._EntityValue.Replace(" ", "");
+            var arrays = parseArray(valueStr);
+            UInt64 offset = entity._EntityOffset;
+            setArrayValuesRecursive(arrays, entity._SecondaryType, ref offset);
+        }
+
+        private void setArrayValuesRecursive(object array, Int32 type, ref UInt64 offset)
+        {
+            if (array is object[] arr)
+            {
+                foreach (var element in arr)
+                {
+                    setArrayValuesRecursive(element, type, ref offset);
+                }
+            }
+            else if (array is string valueStr)
+            {
+                setSinglePrimitiveValue(valueStr, type, offset);
+                offset += (UInt64)getPrimitiveTypeSize(type);
+            }
+        }
+
+        private int getPrimitiveTypeSize(Int32 type)
+        {
+            return type switch
+            {
+                (Int32)PrimitiveTypes.SINT8 => sizeof(sbyte),
+                (Int32)PrimitiveTypes.UINT8 => sizeof(byte),
+                (Int32)PrimitiveTypes.SINT16 => sizeof(Int16),
+                (Int32)PrimitiveTypes.UINT16 => sizeof(UInt16),
+                (Int32)PrimitiveTypes.SINT32 => sizeof(Int32),
+                (Int32)PrimitiveTypes.UINT32 => sizeof(UInt32),
+                (Int32)PrimitiveTypes.SINT64 => sizeof(Int64),
+                (Int32)PrimitiveTypes.UINT64 => sizeof(UInt64),
+                (Int32)PrimitiveTypes.FLOAT => sizeof(float),
+                (Int32)PrimitiveTypes.DOUBLE => sizeof(double),
+                _ => throw new InvalidOperationException($"Unsupported type: {type}"),
+            };
+        }
+
+        private object parseArray(string arrayStr)
+        {
+            if (arrayStr.StartsWith("[") && arrayStr.EndsWith("]"))
+            {
+                arrayStr = arrayStr.Substring(1, arrayStr.Length - 2);
+                var elements = new List<object>();
+                int bracketCount = 0;
+                int startIndex = 0;
+
+                for (int i = 0; i < arrayStr.Length; i++)
+                {
+                    if (arrayStr[i] == '[') bracketCount++;
+                    if (arrayStr[i] == ']') bracketCount--;
+                    if (arrayStr[i] == ',' && bracketCount == 0)
+                    {
+                        elements.Add(parseArray(arrayStr.Substring(startIndex, i - startIndex)));
+                        startIndex = i + 1;
+                    }
+                }
+
+                if (startIndex < arrayStr.Length)
+                    elements.Add(parseArray(arrayStr.Substring(startIndex)));
+
+                return elements.ToArray();
+            }
+            else
+            {
+                return arrayStr.Trim();
+            }
+        }
+
         private void setPrimitiveValues(Entity entity)
         {
-            byte[] value = new byte[0];
+            if(entity._SecondaryType == (Int32)PrimitiveTypes.BOOL)
+            {
+                byte[] value = new byte[1];
+                value[0] = entity._EntityValueBool ? (byte)1 : (byte)0;
+                HexEditorEdited.SetBytes(value, entity._EntityOffset);
+            }
+            else
+                setSinglePrimitiveValue(entity._EntityValue, entity._SecondaryType, entity._EntityOffset);
+        }
 
-            switch((Int32)entity._SecondaryType)
+        private void setSinglePrimitiveValue(string valueStr, Int32 type, UInt64 offset)
+        {
+            byte[] value;
+
+            switch (type)
             {
                 case (Int32)PrimitiveTypes.SINT8:
                     value = new byte[1];
-                    value[0] = (byte)convertStringToIntegralType<sbyte>(entity._EntityValue);
+                    value[0] = (byte)convertStringToIntegralType<sbyte>(valueStr);
                 break;
                 case (Int32)PrimitiveTypes.UINT8:
                     value = new byte[1];
-                    value[0] = (byte)convertStringToIntegralType<byte>(entity._EntityValue);
+                    value[0] = (byte)convertStringToIntegralType<byte>(valueStr);
                 break;
                 case (Int32)PrimitiveTypes.SINT16:
                 {
                     value = new byte[2];
                     Int16 temp = 0;
-                    temp = convertStringToIntegralType<Int16>(entity._EntityValue);
+                    temp = convertStringToIntegralType<Int16>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                 } break;
@@ -223,7 +311,7 @@ namespace HexLoom
                 {
                     value = new byte[2];
                     UInt16 temp = 0;
-                    temp = convertStringToIntegralType<UInt16>(entity._EntityValue);
+                    temp = convertStringToIntegralType<UInt16>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                 } break;
@@ -231,7 +319,7 @@ namespace HexLoom
                 {
                     value = new byte[4];
                     Int32 temp = 0;
-                    temp = convertStringToIntegralType<Int32>(entity._EntityValue);
+                    temp = convertStringToIntegralType<Int32>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -241,7 +329,7 @@ namespace HexLoom
                 {
                     value = new byte[4];
                     UInt32 temp = 0;
-                    temp = convertStringToIntegralType<UInt32>(entity._EntityValue);
+                    temp = convertStringToIntegralType<UInt32>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -251,7 +339,7 @@ namespace HexLoom
                 {
                     value = new byte[8];
                     Int64 temp = 0;
-                    temp = convertStringToIntegralType<Int64>(entity._EntityValue);
+                    temp = convertStringToIntegralType<Int64>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -265,7 +353,7 @@ namespace HexLoom
                 {
                     value = new byte[8];
                     UInt64 temp = 0;
-                    temp = convertStringToIntegralType<UInt64>(entity._EntityValue);
+                    temp = convertStringToIntegralType<UInt64>(valueStr);
                     value[0] = (byte)(temp & 0xFF);
                     value[1] = (byte)((temp >> 8) & 0xFF);
                     value[2] = (byte)((temp >> 16) & 0xFF);
@@ -278,25 +366,25 @@ namespace HexLoom
                 case (Int32)PrimitiveTypes.FLOAT:
                 {
                     float tempf = 0;
-                    tempf = convertStringToFloatType<float>(entity._EntityValue);
+                    tempf = convertStringToFloatType<float>(valueStr);
                     value = BitConverter.GetBytes(tempf);
                 } break;
                 case (Int32)PrimitiveTypes.DOUBLE:
                 {
                     double tempf = 0;
-                    tempf = convertStringToFloatType<double>(entity._EntityValue);
+                    tempf = convertStringToFloatType<double>(valueStr);
                     value = BitConverter.GetBytes(tempf);
                 } break;
                 default: //bool
                     value = new byte[1];
-                    value[0] = entity._EntityValueBool ? (byte)1 : (byte)0;
+                    value[0] = string.Equals(valueStr, "True", StringComparison.CurrentCultureIgnoreCase) ? (byte)1 : (byte)0;
                 break;
             }
-           
-            if(_projectSettings.IsBigEndian)
+
+            if (_projectSettings.IsBigEndian)
                 value = byteSwap(value);
 
-            HexEditorEdited.SetBytes(value, entity._EntityOffset);
+            HexEditorEdited.SetBytes(value, offset);
         }
 
         private byte[] byteSwap(byte[] input)
