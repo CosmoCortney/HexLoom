@@ -160,7 +160,7 @@ namespace HexLoom
             applyChanges();
         }
 
-        private void applyChanges()
+        private async void applyChanges()
         {
             foreach (var groupS in EntityGroupStack.Children)
             {
@@ -179,11 +179,19 @@ namespace HexLoom
                     if (!entity._Apply)
                         continue;
 
-                    switch(entity._PrimaryType)
+                    try
                     {
-                        default:
-                            setPrimitiveValues(entity);
-                        break;
+                        switch (entity._PrimaryType)
+                        {
+                            default:
+                                setPrimitiveValues(entity);
+                            break;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await DisplayAlert("Error", "Ill-formed value in " + entity._EntityName + ".\nException thrown: " + ex.Message, "OK");
+                        return;
                     }
                 }
             }
@@ -198,11 +206,11 @@ namespace HexLoom
                 case (Int32)PrimitiveTypes.SINT8:
                     value = new byte[1];
                     value[0] = (byte)convertStringToIntegralType<sbyte>(entity._EntityValue);
-                    break;
+                break;
                 case (Int32)PrimitiveTypes.UINT8:
                     value = new byte[1];
                     value[0] = (byte)convertStringToIntegralType<byte>(entity._EntityValue);
-                    break;
+                break;
                 case (Int32)PrimitiveTypes.SINT16:
                 {
                     value = new byte[2];
@@ -284,7 +292,7 @@ namespace HexLoom
                     value[0] = entity._EntityValueBool ? (byte)1 : (byte)0;
                 break;
             }
-
+           
             if(_projectSettings.IsBigEndian)
                 value = byteSwap(value);
 
