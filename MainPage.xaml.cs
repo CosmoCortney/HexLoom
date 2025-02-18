@@ -186,6 +186,9 @@ namespace HexLoom
                             case (Int32)PrimaryTypes.ARRAY:
                                 setArrayValues(entity);
                             break;
+                            case (Int32)PrimaryTypes.COLOR:
+                                setColorValue(entity);
+                            break;
                             default: //PRIMITIVE
                                 setPrimitiveValues(entity);
                             break;
@@ -338,6 +341,36 @@ namespace HexLoom
             {
                 setSinglePrimitiveValue(valueStr, type, offset);
                 offset += (UInt64)Helpers.GetPrimitiveTypeSize(type);
+            }
+        }
+
+        private void setColorValue(Entity entity)
+        {
+ 
+            Int32 type = entity._SecondaryType;
+            string valueStr = Helpers.SanitizeColorString(entity._EntityValue, type);
+
+            switch (entity._SecondaryType)
+            {
+                case (Int32)ColorTypes.RGBA:
+                {
+                    setSinglePrimitiveValue("0x" + valueStr, (Int32)PrimitiveTypes.UINT32, entity._EntityOffset);
+                } break;
+                case (Int32)ColorTypes.RGBF:
+                case (Int32)ColorTypes.RGBAF:
+                {
+                    var arrays = Helpers.ParseArray(valueStr);
+                    UInt64 offset = entity._EntityOffset;
+                    setArrayValuesRecursive(arrays, (Int32)ArrayTypes.FLOAT, ref offset);
+                } break;
+                default: //RGB
+                {
+                    byte[] value = new byte[3];
+                    value[0] = Convert.ToByte(valueStr.Substring(0, 2), 16);
+                    value[1] = Convert.ToByte(valueStr.Substring(2, 2), 16);
+                    value[2] = Convert.ToByte(valueStr.Substring(4, 2), 16);
+                    HexEditorEdited.SetBytes(value, entity._EntityOffset);
+                } break;
             }
         }
 
