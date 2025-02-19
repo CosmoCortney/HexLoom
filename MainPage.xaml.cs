@@ -13,6 +13,7 @@ namespace HexLoom
             MenuItemNewProject.IsEnabled = true;
             MenuItemChangeSettings.IsEnabled = false;
             setTestData();
+            HexEditorOriginal.SyncTarget = HexEditorEdited;
         }
 
         private void onAddGroupClicked(object sender, EventArgs e)
