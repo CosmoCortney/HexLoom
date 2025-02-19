@@ -67,7 +67,7 @@ namespace HexLoom
 
     enum StringTypes : Int32
     {
-        UTF8,
+        UTF8 = 1,
         UTF16LE,
         UTF16BE,
         UTF32LE,

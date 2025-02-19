@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
+using System.Runtime.InteropServices;
 
 namespace HexLoom
 {
@@ -189,6 +190,9 @@ namespace HexLoom
                             case (Int32)PrimaryTypes.COLOR:
                                 setColorValue(entity);
                             break;
+                            case (Int32)PrimaryTypes.STRING:
+                                setStringValue(entity);
+                            break;
                             default: //PRIMITIVE
                                 setPrimitiveValues(entity);
                             break;
@@ -346,7 +350,6 @@ namespace HexLoom
 
         private void setColorValue(Entity entity)
         {
- 
             Int32 type = entity._SecondaryType;
             string valueStr = Helpers.SanitizeColorString(entity._EntityValue, type);
 
@@ -372,6 +375,47 @@ namespace HexLoom
                     HexEditorEdited.SetBytes(value, entity._EntityOffset);
                 } break;
             }
+        }
+
+        private void setStringValue(Entity entity)
+        {
+            Int32 type = entity._SecondaryType;
+            byte[] value;
+
+            switch (type)
+            {
+                case (Int32)StringTypes.UTF16LE:
+                case (Int32)StringTypes.UTF16BE:
+                    {
+                        IntPtr resultPtr = Helpers.ConvertWcharStringToWcharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
+                        int length = Helpers.GetCharArrayLength(resultPtr);
+                        value = new byte[length*2];
+                        Marshal.Copy(resultPtr, value, 0, length * 2);
+                        Helpers.FreeMemoryWcharPtr(resultPtr);
+                    }
+                    break;
+                case (Int32)StringTypes.UTF32LE:
+                case (Int32)StringTypes.UTF32BE:
+                    {
+                        IntPtr resultPtr = Helpers.ConvertWcharStringToU32charStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
+                        int length = Helpers.GetUIntArrayLength(resultPtr);
+                        value = new byte[length * 4];
+                        Marshal.Copy(resultPtr, value, 0, length * 4);
+                        Helpers.FreeMemoryU32charPtr(resultPtr);
+                    }
+                    break;
+                default: //single and variable byte char strings
+                    {
+                        IntPtr resultPtr = Helpers.ConvertWcharStringToCharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
+                        int length = Helpers.GetByteArrayLength(resultPtr);
+                        value = new byte[length];
+                        Marshal.Copy(resultPtr, value, 0, length);
+                        Helpers.FreeMemoryCharPtr(resultPtr);
+                    }
+                    break;
+            }
+
+            HexEditorEdited.SetBytes(value, entity._EntityOffset);
         }
 
         private void setTestData()

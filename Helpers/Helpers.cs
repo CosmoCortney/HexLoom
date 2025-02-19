@@ -3,11 +3,58 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace HexLoom
 {
     internal class Helpers
     {
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char*
+        public static extern IntPtr ConvertWcharStringToCharStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to wchar_t*
+        public static extern IntPtr ConvertWcharStringToWcharStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
+
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char32_t*
+        public static extern IntPtr ConvertWcharStringToU32charStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FreeMemoryCharPtr(IntPtr ptr);
+
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FreeMemoryWcharPtr(IntPtr ptr);
+
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void FreeMemoryU32charPtr(IntPtr ptr);
+
+        public static int GetByteArrayLength(IntPtr ptr)
+        {
+            int length = 0;
+
+            while (Marshal.ReadByte(ptr, length) != 0)
+                ++length;
+
+            return length;
+        }
+
+        public static int GetCharArrayLength(IntPtr ptr)
+        {
+            int length = 0;
+
+            while (Marshal.ReadInt16(ptr, length * 2) != 0)
+                ++length;
+
+            return length;
+        }
+
+        public static int GetUIntArrayLength(IntPtr ptr)
+        {
+            int length = 0;
+
+            while (Marshal.ReadInt32(ptr, length * 4) != 0)
+                ++length;
+
+            return length;
+        }
+
         public static byte[] ByteSwap(byte[] input)
         {
             byte[] output = new byte[input.Length];
