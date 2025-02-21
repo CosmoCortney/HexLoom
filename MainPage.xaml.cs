@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -178,31 +178,58 @@ namespace HexLoom
 
                     var entity = entityS as Entity;
 
-                    if (!entity._Apply)
-                        continue;
 
-                    try
+                    if (entity._Apply)
                     {
-                        switch (entity._PrimaryType)
+                        try
                         {
-                            case (Int32)PrimaryTypes.ARRAY:
-                                setArrayValues(entity);
-                            break;
-                            case (Int32)PrimaryTypes.COLOR:
-                                setColorValue(entity);
-                            break;
-                            case (Int32)PrimaryTypes.STRING:
-                                setStringValue(entity);
-                            break;
-                            default: //PRIMITIVE
-                                setPrimitiveValues(entity);
-                            break;
+                            switch (entity._PrimaryType)
+                            {
+                                case (Int32)PrimaryTypes.ARRAY:
+                                    setArrayValues(entity);
+                                break;
+                                case (Int32)PrimaryTypes.COLOR:
+                                    setColorValue(entity);
+                                break;
+                                case (Int32)PrimaryTypes.STRING:
+                                    setStringValue(entity);
+                                break;
+                                default: //PRIMITIVE
+                                    setPrimitiveValues(entity);
+                                break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await DisplayAlert("Error", "Ill-formed value in " + entity._EntityName + ".\nException thrown: " + ex.Message, "OK");
+                            return;
                         }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        await DisplayAlert("Error", "Ill-formed value in " + entity._EntityName + ".\nException thrown: " + ex.Message, "OK");
-                        return;
+                        try
+                        {
+                            switch (entity._PrimaryType)
+                            {
+                                case (Int32)PrimaryTypes.ARRAY:
+                                    unsetSingleArrayValue(entity);
+                                break;
+                                case (Int32)PrimaryTypes.COLOR:
+                                    unsetSingleColorValue(entity);
+                                break;
+                                case (Int32)PrimaryTypes.STRING:
+                                    unsetSingleStringValue(entity);
+                                break;
+                                default: //PRIMITIVE
+                                    unsetSinglePrimitiveValue(entity);
+                                break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await DisplayAlert("Error", "Cannot not unset value " + entity._EntityName + ".\nException thrown: " + ex.Message, "OK");
+                            return;
+                        }
                     }
                 }
             }
@@ -218,6 +245,116 @@ namespace HexLoom
             }
             else
                 setSinglePrimitiveValue(entity._EntityValue, entity._SecondaryType, entity._EntityOffset);
+        }
+
+        private void unsetSingleStringValue(Entity entity)
+        {
+            byte[] value = convertString(entity);
+            value = HexEditorOriginal.GetBytes(entity._EntityOffset, value.Length);
+            HexEditorEdited.SetBytes(value, entity._EntityOffset);
+        }
+
+        private void unsetSinglePrimitiveValue(Entity entity)
+        {
+            byte[] value;
+            UInt64 offset = entity._EntityOffset;
+
+            switch (entity._SecondaryType)
+            {
+                case (Int32)PrimitiveTypes.SINT16:
+                case (Int32)PrimitiveTypes.UINT16:
+                {
+                    value = HexEditorOriginal.GetBytes(offset, 2);
+                } break;
+                case (Int32)PrimitiveTypes.SINT32:
+                case (Int32)PrimitiveTypes.UINT32:
+                case (Int32)PrimitiveTypes.FLOAT:
+                {
+                    value = HexEditorOriginal.GetBytes(offset, 4);
+                } break;
+                case (Int32)PrimitiveTypes.SINT64:
+                case (Int32)PrimitiveTypes.UINT64:
+                case (Int32)PrimitiveTypes.DOUBLE:
+                {
+                    value = HexEditorOriginal.GetBytes(offset, 8);
+                } break;
+                default: //SINT8, UINT8, BOOL
+                {
+                    value = HexEditorOriginal.GetBytes(offset, 1);
+                } break;
+            }
+
+            HexEditorEdited.SetBytes(value, offset);
+        }
+
+        private void unsetSingleColorValue(Entity entity)
+        {
+            byte[] value;
+            UInt64 offset = entity._EntityOffset;
+
+            switch (entity._SecondaryType)
+            {
+                case (Int32)ColorTypes.RGBA:
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, 4);
+                    }
+                    break;
+                case (Int32)ColorTypes.RGBF:
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, 12);
+                    }
+                    break;
+                case (Int32)ColorTypes.RGBAF:
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, 16);
+                    }
+                    break;
+                default: //RGB
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, 3);
+                    }
+                    break;
+            }
+
+            HexEditorEdited.SetBytes(value, offset);
+        }
+
+        private void unsetSingleArrayValue(Entity entity)
+        {
+            byte[] value;
+            UInt64 offset = entity._EntityOffset;
+            Int32 count = entity._EntityValue.Count(c => c == ',') + 1;
+
+            switch (entity._SecondaryType)
+            {
+                case (Int32)ArrayTypes.SINT16:
+                case (Int32)ArrayTypes.UINT16:
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, count * 2);
+                    }
+                    break;
+                case (Int32)ArrayTypes.SINT32:
+                case (Int32)ArrayTypes.UINT32:
+                case (Int32)ArrayTypes.FLOAT:
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, count * 4);
+                    }
+                    break;
+                case (Int32)ArrayTypes.SINT64:
+                case (Int32)ArrayTypes.UINT64:
+                case (Int32)ArrayTypes.DOUBLE:
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, count * 8);
+                    }
+                    break;
+                default: //SINT8, UINT8, BOOL
+                    {
+                        value = HexEditorOriginal.GetBytes(offset, count);
+                    }
+                    break;
+            }
+
+            HexEditorEdited.SetBytes(value, offset);
         }
 
         private void setSinglePrimitiveValue(string valueStr, Int32 type, UInt64 offset)
@@ -378,7 +515,7 @@ namespace HexLoom
             }
         }
 
-        private void setStringValue(Entity entity)
+        private byte[] convertString(Entity entity)
         {
             Int32 type = entity._SecondaryType;
             byte[] value;
@@ -390,7 +527,7 @@ namespace HexLoom
                     {
                         IntPtr resultPtr = Helpers.ConvertWcharStringToWcharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
                         int length = Helpers.GetCharArrayLength(resultPtr);
-                        value = new byte[length*2];
+                        value = new byte[length * 2];
                         Marshal.Copy(resultPtr, value, 0, length * 2);
                         Helpers.FreeMemoryWcharPtr(resultPtr);
                     }
@@ -416,6 +553,11 @@ namespace HexLoom
                     break;
             }
 
+            return value;
+        }
+        private void setStringValue(Entity entity)
+        {
+            byte[] value = convertString(entity);
             HexEditorEdited.SetBytes(value, entity._EntityOffset);
         }
 
