@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -133,7 +133,7 @@ namespace HexLoom
             if (_binaryDataOriginal.Length == 0)
                 return false;
 
-            _binaryDataEdited = _binaryDataOriginal;
+            _binaryDataEdited = (Byte[])_binaryDataOriginal.Clone();
             setHexEditors();
             return true;
         }
