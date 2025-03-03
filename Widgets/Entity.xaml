@@ -49,6 +49,7 @@
                     HorizontalOptions="FillAndExpand"
                     MinimumHeightRequest="20"
                     Placeholder="Item Name"
+                    TextColor="{StaticResource HexLoomTextColor}"
                     VerticalOptions="Center" />
 
                 <Entry
@@ -59,7 +60,8 @@
                     HeightRequest="20"
                     MinimumHeightRequest="20"
                     Placeholder="Offset"
-                    TextChanged="onOffsetTextChanged" />
+                    TextChanged="onOffsetTextChanged"
+                    TextColor="{StaticResource HexLoomTextColor}" />
 
                 <Picker
                     x:Name="PrimaryTypePicker"
@@ -70,7 +72,8 @@
                     MinimumHeightRequest="20"
                     SelectedIndex="0"
                     SelectedIndexChanged="onPrimaryTypeIndexChanged"
-                    SelectedItem="0">
+                    SelectedItem="0"
+                    TextColor="{StaticResource HexLoomTextColor}">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}" />
                     </Picker.ItemsSource>
@@ -105,7 +108,8 @@
                     MinimumHeightRequest="20"
                     SelectedIndex="0"
                     SelectedIndexChanged="onSecondaryTypeIndexChanged"
-                    SelectedItem="0">
+                    SelectedItem="0"
+                    TextColor="{StaticResource HexLoomTextColor}">
 
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}" />
@@ -120,7 +124,8 @@
                     FontSize="11"
                     HeightRequest="20"
                     MinimumHeightRequest="20"
-                    Placeholder="Value" />
+                    Placeholder="Value"
+                    TextColor="{StaticResource HexLoomTextColor}" />
 
                 <CheckBox
                     x:Name="EntryItemValueBool"

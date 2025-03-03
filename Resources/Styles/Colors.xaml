@@ -6,7 +6,7 @@
     <Color x:Key="Background">#1F1F1F</Color>
     <Color x:Key="FrameBorder">#7665bF</Color>
     <Color x:Key="SubBorder">#504095</Color>
-    <Color x:Key="LoomHexTextColor">#EFEFEF</Color>
+    <Color x:Key="HexLoomTextColor">#EFEFEF</Color>
     <Color x:Key="Goob">#0FA3B1</Color>
     <Color x:Key="Nope">#DF2935</Color>
 
