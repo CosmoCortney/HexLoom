@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="HexLoom.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -114,6 +114,13 @@
             Grid.Column="4"
             _FontSize="12"
             _ShowAddressArea="False" />
+
+        <!--Slider
+                        Grid.Row="1"
+            Grid.Column="2"
+                HeightRequest="300"
+                Maximum="16"
+                HorizontalOptions="CenterAndExpand" /-->
 
     </Grid>
 </ContentPage>

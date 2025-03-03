@@ -7,7 +7,7 @@
     <Border
         Padding="0,0"
         Stroke="#947Be3"
-        StrokeShape="RoundRectangle 5, 5, 5, 5"
+        StrokeShape="RoundRectangle 0, 5, 5, 0"
         StrokeThickness="2">
 
         <Grid ColumnDefinitions=".05*, .95*" RowDefinitions="*, *">
@@ -17,7 +17,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Background="#333364"
+                Background="#333333"
                 ColumnDefinitions=".05*, .075*, .264*, .266*, .266*, .1*"
                 RowDefinitions="22">
 
@@ -56,6 +56,7 @@
                     x:Name="EntryItemOffset"
                     Grid.Row="0"
                     Grid.Column="3"
+                    FontFamily="Consolas"
                     FontSize="11"
                     HeightRequest="20"
                     MinimumHeightRequest="20"
@@ -95,7 +96,7 @@
                 x:Name="ContentValue"
                 Grid.Row="1"
                 Grid.Column="1"
-                Background="#336364"
+                Background="#222222"
                 ColumnDefinitions=".25*, .75*"
                 RowDefinitions="22">
 
@@ -121,6 +122,7 @@
                     x:Name="EntryItemValueText"
                     Grid.Row="0"
                     Grid.Column="1"
+                    FontFamily="Consolas"
                     FontSize="11"
                     HeightRequest="20"
                     MinimumHeightRequest="20"

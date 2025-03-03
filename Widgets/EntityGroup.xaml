@@ -7,12 +7,12 @@
 
     <Border
         Padding="0,0"
-        BackgroundColor="#2B0B98"
-        Stroke="#C49B33"
-        StrokeShape="RoundRectangle 20, 20, 20, 20"
+        BackgroundColor="#333333"
+        Stroke="{StaticResource FrameBorder}"
+        StrokeShape="RoundRectangle 0, 15, 15, 0"
         StrokeThickness="4">
 
-        <Grid ColumnDefinitions=".1*, .5*, Auto, Auto, Auto" RowDefinitions="Auto, .95*">
+        <Grid ColumnDefinitions=".05*, .35*, Auto, Auto, Auto" RowDefinitions="Auto, .95*">
 
             <Image
                 x:Name="DragHandle"
@@ -32,11 +32,15 @@
                 x:Name="EntryGroupName"
                 Grid.Row="0"
                 Grid.Column="1"
+                HeightRequest="20"
+                MinimumHeightRequest="20"
                 Placeholder="Group Name" />
 
             <Button
                 Grid.Row="0"
                 Grid.Column="2"
+                HeightRequest="20"
+                MinimumHeightRequest="20"
                 Text="Collapse" />
 
             <Button
@@ -44,6 +48,8 @@
                 Grid.Row="0"
                 Grid.Column="3"
                 Clicked="onAddItemClicked"
+                HeightRequest="20"
+                MinimumHeightRequest="20"
                 Text="Add Itme" />
 
             <Button
@@ -51,6 +57,8 @@
                 Grid.Row="0"
                 Grid.Column="4"
                 Clicked="onDeleteClicked"
+                HeightRequest="20"
+                MinimumHeightRequest="20"
                 Text="X"
                 TextColor="{StaticResource Nope}" />
 
@@ -73,6 +81,3 @@
         </Grid>
     </Border>
 </ContentView>
-
-
-
