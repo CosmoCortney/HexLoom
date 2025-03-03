@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +24,46 @@ namespace HexLoom
 
         [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void FreeMemoryU32charPtr(IntPtr ptr);
+
+        public static void PanUpdated(ContentView instance, object sender, PanUpdatedEventArgs e)
+        {
+            switch (e.StatusType)
+            {
+                case GestureStatus.Started:
+                    instance.Opacity = 0.5;
+                    break;
+                case GestureStatus.Running:
+                    instance.TranslationY = e.TotalY;
+                    break;
+                case GestureStatus.Completed:
+                    {
+                        instance.Opacity = 1;
+                        double dragPosY = instance.Frame.Center.Y + instance.TranslationY;
+                        instance.TranslationY = 0;
+                        var parentStack = instance.Parent as VerticalStackLayout;
+
+                        if (parentStack != null)
+                        {
+                            var items = parentStack.Children;
+                            double itemHeight = parentStack.Height / parentStack.Count;
+                            int currentIndex = items.IndexOf(instance);
+                            int newIndex = (int)(dragPosY / itemHeight);
+
+                            if (newIndex == currentIndex)
+                                return;
+
+                            if (newIndex >= items.Count)
+                                newIndex = items.Count - 1;
+                            else if (newIndex < 0)
+                                newIndex = 0;
+
+                            items.RemoveAt(currentIndex);
+                            items.Insert(newIndex, instance);
+                        }
+                    }
+                    break;
+            }
+        }
 
         public static int GetByteArrayLength(IntPtr ptr)
         {
