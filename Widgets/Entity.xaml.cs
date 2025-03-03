@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -106,8 +106,11 @@ namespace HexLoom
         {
             InitializeComponent();
             setupPirmaryTypePicker();
-            setWidgetPaddings();
             setupSecondaryDatatypePicker((Int32)PrimaryTypes.PRIMITIVE);
+            Helpers.SetWidgetPadding<Entry>(0, 0, 0, 0);
+            Helpers.SetWidgetPadding<Microsoft.Maui.Controls.Button>(0, 0, 0, 0);
+            Helpers.SetWidgetPadding<Picker>(0, 0, 0, 0);
+            Helpers.SetWidgetPadding<Microsoft.Maui.Controls.CheckBox>(0, 0, 0, 0);
         }
 
         public bool _Apply => this.ApplyCheckbox.IsChecked;
@@ -128,38 +131,6 @@ namespace HexLoom
             {
                 _EntityOffset = 0;
             }
-        }
-
-        private void setWidgetPaddings()
-        {
-            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("", (handler, view) =>
-            {
-                if (view is Entry)
-                    handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-            });
-
-            Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping("", (handler, view) =>
-            {
-                if (view is Picker)
-                    handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-            });
-
-            Microsoft.Maui.Handlers.CheckBoxHandler.Mapper.AppendToMapping("", (handler, view) =>
-            {
-                handler.PlatformView.Content = null;
-                handler.PlatformView.HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Center;
-                handler.PlatformView.VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center;
-                handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-                handler.PlatformView.Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-            });
-
-            Microsoft.Maui.Handlers.ButtonHandler.Mapper.AppendToMapping("", (handler, view) =>
-            {
-                if (view is Microsoft.Maui.Controls.Button)
-                    handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-                handler.PlatformView.Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-                handler.PlatformView.HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left;
-            });
         }
 
         private void setupPirmaryTypePicker()
