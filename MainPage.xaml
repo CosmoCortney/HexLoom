@@ -21,7 +21,10 @@
                 Clicked="onSaveProjectClicked"
                 Text="Save Changes" />
             <MenuFlyoutItem x:Name="MenuItemOpenProject" Text="Open Project" />
-            <MenuFlyoutItem x:Name="MenuItemGenerate" Text="Generate Output File" />
+            <MenuFlyoutItem
+                x:Name="MenuItemGenerate"
+                Clicked="onGenerateOutputFileClicked"
+                Text="Generate Output File" />
             <MenuFlyoutItem x:Name="MenuItemCloseProject" Text="Close Project" />
 
         </MenuBarItem>

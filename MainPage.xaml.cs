@@ -21,6 +21,12 @@ namespace HexLoom
             EntityGroupStack.Children.Add(new EntityGroup());
         }
 
+        private void onGenerateOutputFileClicked(object sender, EventArgs e)
+        {
+            applyChanges();
+            System.IO.File.WriteAllBytes(_projectSettings.OutputFilePath, _binaryDataEdited);
+        }
+
         private ProjectSettings _projectSettings;
         private bool _projectOpen = false;
         private bool _projectChanged = false;
