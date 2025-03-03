@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -75,6 +75,7 @@ namespace HexLoom
             project["InputFilePath"] = _projectSettings.InputFilePath;
             project["OutputFilePath"] = _projectSettings.OutputFilePath;
             project["BaseAddress"] = _projectSettings.BaseAddress;
+            project["IsBigEndian"] = _projectSettings.IsBigEndian;
             var groupArr = new JArray();
 
             foreach (var groupS in EntityGroupStack.Children)

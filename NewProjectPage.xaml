@@ -70,15 +70,17 @@
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Text="0" />
-        <Label x:Name="EndiannessLabel"
+        <Label
+            x:Name="EndiannessLabel"
             Grid.Row="3"
             Grid.Column="3"
             Text="Endianness:"
             VerticalOptions="Center" />
         <Picker
-            x:Name="Endianness"
+            x:Name="EndiannessPicker"
             Grid.Row="3"
-            Grid.Column="4">
+            Grid.Column="4"
+            SelectedIndexChanged="onEndiannessPickerIndexChanged">
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
                     <x:String>Little Endian</x:String>

@@ -1,4 +1,4 @@
-﻿using Microsoft.Maui.Storage;
+using Microsoft.Maui.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -141,6 +141,11 @@ namespace HexLoom
         private async void onCancelButtonClicked(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
+        }
+
+        private async void onEndiannessPickerIndexChanged(object sender, EventArgs e)
+        {
+            _ProjectSettings.IsBigEndian = EndiannessPicker.SelectedIndex > 0;
         }
 
         private async void getInputFilePath(object sender, EventArgs e)
