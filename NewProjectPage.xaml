@@ -36,9 +36,9 @@
             Grid.Row="1"
             Grid.Column="2"
             Grid.ColumnSpan="3"
-            TextChanged="onOInputPathTextChanged"
             HeightRequest="10"
-            Placeholder="Input Binary File" />
+            Placeholder="Input Binary File"
+            TextChanged="onOInputPathTextChanged" />
         <Label
             Grid.Row="2"
             Grid.Column="0"
@@ -68,8 +68,24 @@
             x:Name="BaseAddess"
             Grid.Row="3"
             Grid.Column="1"
-            Grid.ColumnSpan="4"
+            Grid.ColumnSpan="2"
             Text="0" />
+        <Label x:Name="EndiannessLabel"
+            Grid.Row="3"
+            Grid.Column="3"
+            Text="Endianness:"
+            VerticalOptions="Center" />
+        <Picker
+            x:Name="Endianness"
+            Grid.Row="3"
+            Grid.Column="4">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>Little Endian</x:String>
+                    <x:String>Big Endian</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
         <Button
             Grid.Row="4"
             Grid.Column="3"
