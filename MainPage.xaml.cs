@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -250,7 +250,7 @@ namespace HexLoom
 
         private void unsetSingleStringValue(Entity entity)
         {
-            byte[] value = convertString(entity);
+            byte[] value = Helpers.ConvertString(entity);
             value = HexEditorOriginal.GetBytes(entity._EntityOffset, value.Length);
             HexEditorEdited.SetBytes(value, entity._EntityOffset);
         }
@@ -516,49 +516,9 @@ namespace HexLoom
             }
         }
 
-        private byte[] convertString(Entity entity)
-        {
-            Int32 type = entity._SecondaryType;
-            byte[] value;
-
-            switch (type)
-            {
-                case (Int32)StringTypes.UTF16LE:
-                case (Int32)StringTypes.UTF16BE:
-                    {
-                        IntPtr resultPtr = Helpers.ConvertWcharStringToWcharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
-                        int length = Helpers.GetCharArrayLength(resultPtr);
-                        value = new byte[length * 2];
-                        Marshal.Copy(resultPtr, value, 0, length * 2);
-                        Helpers.FreeMemoryWcharPtr(resultPtr);
-                    }
-                    break;
-                case (Int32)StringTypes.UTF32LE:
-                case (Int32)StringTypes.UTF32BE:
-                    {
-                        IntPtr resultPtr = Helpers.ConvertWcharStringToU32charStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
-                        int length = Helpers.GetUIntArrayLength(resultPtr);
-                        value = new byte[length * 4];
-                        Marshal.Copy(resultPtr, value, 0, length * 4);
-                        Helpers.FreeMemoryU32charPtr(resultPtr);
-                    }
-                    break;
-                default: //single and variable byte char strings
-                    {
-                        IntPtr resultPtr = Helpers.ConvertWcharStringToCharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
-                        int length = Helpers.GetByteArrayLength(resultPtr);
-                        value = new byte[length];
-                        Marshal.Copy(resultPtr, value, 0, length);
-                        Helpers.FreeMemoryCharPtr(resultPtr);
-                    }
-                    break;
-            }
-
-            return value;
-        }
         private void setStringValue(Entity entity)
         {
-            byte[] value = convertString(entity);
+            byte[] value = Helpers.ConvertString(entity);
             HexEditorEdited.SetBytes(value, entity._EntityOffset);
         }
 

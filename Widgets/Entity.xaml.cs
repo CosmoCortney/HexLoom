@@ -9,12 +9,6 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HexLoom
 {
-    public class PickerItem
-    {
-        public Int32 Id { get; set; }
-        public string DisplayName { get; set; }
-    }
-
     enum PrimaryTypes : Int32
     {
         PRIMITIVE,

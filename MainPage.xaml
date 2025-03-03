@@ -6,7 +6,6 @@
     xmlns:custom="clr-namespace:HexEditor;assembly=HexEditor"
     xmlns:local="clr-namespace:HexLoom">
 
-
     <ContentPage.MenuBarItems>
         <MenuBarItem Text="File">
             <MenuFlyoutItem
@@ -115,12 +114,14 @@
             _FontSize="12"
             _ShowAddressArea="False" />
 
-        <!--Slider
-                        Grid.Row="1"
+        <!--
+            Slider
+            Grid.Row="1"
             Grid.Column="2"
-                HeightRequest="300"
-                Maximum="16"
-                HorizontalOptions="CenterAndExpand" /-->
+            HeightRequest="300"
+            Maximum="16"
+            HorizontalOptions="CenterAndExpand" /
+        -->
 
     </Grid>
 </ContentPage>

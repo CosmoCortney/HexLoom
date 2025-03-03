@@ -1,4 +1,4 @@
-using Microsoft.Maui.Storage;
+﻿using Microsoft.Maui.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,7 +128,7 @@ namespace HexLoom
             return true;
         }
 
-        private void onOInputPathTextChanged(object sender, EventArgs e)
+        private void onInputPathTextChanged(object sender, EventArgs e)
         {
             _ProjectSettings.InputFilePath = InputBinary.Text;
         }
