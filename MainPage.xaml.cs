@@ -256,7 +256,7 @@ namespace HexLoom
 
         private void unsetSingleStringValue(Entity entity)
         {
-            byte[] value = Helpers.ConvertString(entity);
+            byte[] value = MorphText.ConvertString(entity);
             value = HexEditorOriginal.GetBytes(entity._EntityOffset, value.Length);
             HexEditorEdited.SetBytes(value, entity._EntityOffset);
         }
@@ -524,7 +524,7 @@ namespace HexLoom
 
         private void setStringValue(Entity entity)
         {
-            byte[] value = Helpers.ConvertString(entity);
+            byte[] value = MorphText.ConvertString(entity);
             HexEditorEdited.SetBytes(value, entity._EntityOffset);
         }
 

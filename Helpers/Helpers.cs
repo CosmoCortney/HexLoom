@@ -9,138 +9,6 @@ namespace HexLoom
 {
     internal class Helpers
     {
-        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char*
-        public static extern IntPtr ConvertWcharStringToCharStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
-        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to wchar_t*
-        public static extern IntPtr ConvertWcharStringToWcharStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
-
-        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char32_t*
-        public static extern IntPtr ConvertWcharStringToU32charStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
-        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void FreeMemoryCharPtr(IntPtr ptr);
-
-        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void FreeMemoryWcharPtr(IntPtr ptr);
-
-        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void FreeMemoryU32charPtr(IntPtr ptr);
-
-        public static void PanUpdated(ContentView instance, object sender, PanUpdatedEventArgs e)
-        {
-            switch (e.StatusType)
-            {
-                case GestureStatus.Started:
-                    instance.Opacity = 0.5;
-                    break;
-                case GestureStatus.Running:
-                    instance.TranslationY = e.TotalY;
-                    break;
-                case GestureStatus.Completed:
-                    {
-                        instance.Opacity = 1;
-                        double dragPosY = instance.Frame.Center.Y + instance.TranslationY;
-                        instance.TranslationY = 0;
-                        var parentStack = instance.Parent as VerticalStackLayout;
-
-                        if (parentStack != null)
-                        {
-                            var items = parentStack.Children;
-                            double itemHeight = parentStack.Height / parentStack.Count;
-                            int currentIndex = items.IndexOf(instance);
-                            int newIndex = (int)(dragPosY / itemHeight);
-
-                            if (newIndex == currentIndex)
-                                return;
-
-                            if (newIndex >= items.Count)
-                                newIndex = items.Count - 1;
-                            else if (newIndex < 0)
-                                newIndex = 0;
-
-                            items.RemoveAt(currentIndex);
-                            items.Insert(newIndex, instance);
-                        }
-                    }
-                    break;
-            }
-        }
-
-        public static int GetByteArrayLength(IntPtr ptr)
-        {
-            int length = 0;
-
-            while (Marshal.ReadByte(ptr, length) != 0)
-                ++length;
-
-            return length;
-        }
-
-        public static int GetCharArrayLength(IntPtr ptr)
-        {
-            int length = 0;
-
-            while (Marshal.ReadInt16(ptr, length * 2) != 0)
-                ++length;
-
-            return length;
-        }
-
-        public static int GetUIntArrayLength(IntPtr ptr)
-        {
-            int length = 0;
-
-            while (Marshal.ReadInt32(ptr, length * 4) != 0)
-                ++length;
-
-            return length;
-        }
-
-        public static void SetWidgetPadding<Widget>(Int32 topLeft, Int32 topRight, Int32 bottomLeft, Int32 bottomRight)
-        {
-            if (typeof(Widget) == typeof(Entry))
-            {
-                Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("", (handler, view) =>
-                {
-                    if (view is Entry)
-                        handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(topLeft, topRight, bottomLeft, bottomRight);
-                });
-            }
-            else if (typeof(Widget) == typeof(Button))
-            {
-                Microsoft.Maui.Handlers.ButtonHandler.Mapper.AppendToMapping("", (handler, view) =>
-                {
-                    if (view is Microsoft.Maui.Controls.Button)
-                    {
-                        handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(topLeft, topRight, bottomLeft, bottomRight);
-                        handler.PlatformView.Margin = new Microsoft.UI.Xaml.Thickness(topLeft, topRight, bottomLeft, bottomRight);
-                        handler.PlatformView.HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left;
-                    }
-                });
-            }
-            else if (typeof(Widget) == typeof(Picker))
-            {
-                Microsoft.Maui.Handlers.PickerHandler.Mapper.AppendToMapping("", (handler, view) =>
-                {
-                    if (view is Picker)
-                        handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(topLeft, topRight, bottomLeft, bottomRight);
-                });
-            }
-            else if(typeof(Widget) == typeof(CheckBox))
-            {
-                Microsoft.Maui.Handlers.CheckBoxHandler.Mapper.AppendToMapping("", (handler, view) =>
-                {
-                    if (view is CheckBox)
-                    {
-                        handler.PlatformView.Content = null;
-                        handler.PlatformView.HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Center;
-                        handler.PlatformView.VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center;
-                        handler.PlatformView.Padding = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-                        handler.PlatformView.Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 0, 0);
-                    }
-                });
-            }
-        }
-
         public static byte[] ByteSwap(byte[] input)
         {
             byte[] output = new byte[input.Length];
@@ -168,7 +36,6 @@ namespace HexLoom
                 _ => throw new InvalidOperationException($"Unsupported type: {type}"),
             };
         }
-
         public static object ParseArray(string arrayStr)
         {
             if (arrayStr.StartsWith("[") && arrayStr.EndsWith("]"))
@@ -308,47 +175,6 @@ namespace HexLoom
                     return res.Substring(1);
                 }
             }
-        }
-
-        public static byte[] ConvertString(Entity entity)
-        {
-            Int32 type = entity._SecondaryType;
-            byte[] value;
-
-            switch (type)
-            {
-                case (Int32)StringTypes.UTF16LE:
-                case (Int32)StringTypes.UTF16BE:
-                    {
-                        IntPtr resultPtr = Helpers.ConvertWcharStringToWcharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
-                        int length = Helpers.GetCharArrayLength(resultPtr);
-                        value = new byte[length * 2];
-                        Marshal.Copy(resultPtr, value, 0, length * 2);
-                        Helpers.FreeMemoryWcharPtr(resultPtr);
-                    }
-                    break;
-                case (Int32)StringTypes.UTF32LE:
-                case (Int32)StringTypes.UTF32BE:
-                    {
-                        IntPtr resultPtr = Helpers.ConvertWcharStringToU32charStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
-                        int length = Helpers.GetUIntArrayLength(resultPtr);
-                        value = new byte[length * 4];
-                        Marshal.Copy(resultPtr, value, 0, length * 4);
-                        Helpers.FreeMemoryU32charPtr(resultPtr);
-                    }
-                    break;
-                default: //single and variable byte char strings
-                    {
-                        IntPtr resultPtr = Helpers.ConvertWcharStringToCharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
-                        int length = Helpers.GetByteArrayLength(resultPtr);
-                        value = new byte[length];
-                        Marshal.Copy(resultPtr, value, 0, length);
-                        Helpers.FreeMemoryCharPtr(resultPtr);
-                    }
-                    break;
-            }
-
-            return value;
         }
     }
 }

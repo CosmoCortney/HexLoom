@@ -101,10 +101,10 @@ namespace HexLoom
             InitializeComponent();
             setupPirmaryTypePicker();
             setupSecondaryDatatypePicker((Int32)PrimaryTypes.PRIMITIVE);
-            Helpers.SetWidgetPadding<Entry>(0, 0, 0, 0);
-            Helpers.SetWidgetPadding<Microsoft.Maui.Controls.Button>(0, 0, 0, 0);
-            Helpers.SetWidgetPadding<Picker>(0, 0, 0, 0);
-            Helpers.SetWidgetPadding<Microsoft.Maui.Controls.CheckBox>(0, 0, 0, 0);
+            WidgetHelpers.SetWidgetPadding<Entry>(0, 0, 0, 0);
+            WidgetHelpers.SetWidgetPadding<Microsoft.Maui.Controls.Button>(0, 0, 0, 0);
+            WidgetHelpers.SetWidgetPadding<Picker>(0, 0, 0, 0);
+            WidgetHelpers.SetWidgetPadding<Microsoft.Maui.Controls.CheckBox>(0, 0, 0, 0);
         }
 
         public bool _Apply => this.ApplyCheckbox.IsChecked;
@@ -144,7 +144,7 @@ namespace HexLoom
 
         private void onPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            Helpers.PanUpdated(this, sender, e);
+            WidgetHelpers.PanUpdated(this, sender, e);
         }
 
         private void onDeleteClicked(object sender, EventArgs e)

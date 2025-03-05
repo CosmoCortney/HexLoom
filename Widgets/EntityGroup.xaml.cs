@@ -11,8 +11,8 @@ namespace HexLoom
         public EntityGroup()
         {
             InitializeComponent();
-            Helpers.SetWidgetPadding<Entry>(0, 0, 0, 0);
-            Helpers.SetWidgetPadding<Microsoft.Maui.Controls.Button>(10, 2, 10, 2);
+            WidgetHelpers.SetWidgetPadding<Entry>(0, 0, 0, 0);
+            WidgetHelpers.SetWidgetPadding<Microsoft.Maui.Controls.Button>(10, 2, 10, 2);
         }
 
         public VerticalStackLayout _EntityStack => this.EntityStack;
@@ -24,7 +24,7 @@ namespace HexLoom
 
         private void onPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            Helpers.PanUpdated(this, sender, e);
+            WidgetHelpers.PanUpdated(this, sender, e);
         }
 
         private void onDeleteClicked(object sender, EventArgs e)
