@@ -34,28 +34,30 @@
     <Grid
         x:Name="OuterGrid"
         ColumnDefinitions=".3*, Auto, Auto, Auto, Auto"
-        RowDefinitions="*">
+        RowDefinitions=".05*, *">
 
         <Grid
             x:Name="GroupsGrid"
             Grid.Row="0"
-            Grid.RowSpan="3"
+            Grid.RowSpan="2"
             Grid.Column="0"
-            ColumnDefinitions="0.333*, 0.333*, 0.333*"
+            ColumnDefinitions="0.2*, 0.133*, 0.2*, 0.133*, 0.2*, 0.133*"
             RowDefinitions="Auto, .95*">
 
             <Label
                 Grid.Row="0"
-                Grid.Column="00"
+                Grid.Column="0"
+                FontSize="20"
+                HorizontalOptions="Center"
                 Text="Entities"
                 TextColor="{StaticResource HexLoomTextColor}" />
 
             <Button
                 x:Name="ButtonAddGroup"
                 Grid.Row="0"
-                Grid.Column="1"
+                Grid.Column="2"
                 Clicked="onAddGroupClicked"
-                HorizontalOptions="Center"
+                HorizontalOptions="Fill"
                 Text="Add Group"
                 TextColor="{StaticResource HexLoomTextColor}"
                 VerticalOptions="Center" />
@@ -63,9 +65,9 @@
             <Button
                 x:Name="ButtonApply"
                 Grid.Row="0"
-                Grid.Column="2"
+                Grid.Column="4"
                 Clicked="onApplyClicked"
-                HorizontalOptions="Center"
+                HorizontalOptions="Fill"
                 Text="Apply"
                 TextColor="{StaticResource HexLoomTextColor}"
                 VerticalOptions="Center" />
@@ -73,7 +75,7 @@
             <ScrollView
                 Grid.Row="1"
                 Grid.Column="0"
-                Grid.ColumnSpan="3"
+                Grid.ColumnSpan="6"
                 BackgroundColor="#444444">
 
                 <VerticalStackLayout
@@ -90,41 +92,48 @@
 
         <BoxView
             x:Name="MainFramesSeparator"
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="1"
             BackgroundColor="{StaticResource FrameBorder}"
             VerticalOptions="Fill"
             WidthRequest="2" />
 
+        <Label
+            x:Name="LabelOriginal"
+            Grid.Row="0"
+            Grid.Column="2"
+            FontSize="20"
+            HorizontalOptions="Center"
+            Text="Original"
+            TextColor="{StaticResource HexLoomTextColor}" />
         <custom:HexEditor
             x:Name="HexEditorOriginal"
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="2"
             _FontSize="12" />
 
         <BoxView
             x:Name="MainFramesSeparator2"
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="3"
             BackgroundColor="{StaticResource FrameBorder}"
             VerticalOptions="Fill"
             WidthRequest="2" />
 
+        <Label
+            x:Name="LabelEdited"
+            Grid.Row="0"
+            Grid.Column="4"
+            FontSize="20"
+            HorizontalOptions="Center"
+            Text="Edited"
+            TextColor="{StaticResource HexLoomTextColor}" />
         <custom:HexEditor
             x:Name="HexEditorEdited"
-            Grid.Row="0"
+            Grid.Row="1"
             Grid.Column="4"
             _FontSize="12"
             _ShowAddressArea="False" />
-
-        <!--
-            Slider
-            Grid.Row="1"
-            Grid.Column="2"
-            HeightRequest="300"
-            Maximum="16"
-            HorizontalOptions="CenterAndExpand" /
-        -->
 
     </Grid>
 </ContentPage>
