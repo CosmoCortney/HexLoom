@@ -82,6 +82,7 @@
             x:Name="EndiannessPicker"
             Grid.Row="3"
             Grid.Column="4"
+            SelectedIndex="0"
             SelectedIndexChanged="onEndiannessPickerIndexChanged">
             <Picker.ItemsSource>
                 <x:Array Type="{x:Type x:String}">

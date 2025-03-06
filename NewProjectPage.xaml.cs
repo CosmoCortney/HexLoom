@@ -31,6 +31,7 @@ namespace HexLoom
         {
             InitializeComponent();
             _ProjectSettings = new ProjectSettings();
+            EndiannessPicker.SelectedIndex = 0;
         }
 
         public NewProjectPage(ProjectSettings projectSettings)
@@ -41,6 +42,7 @@ namespace HexLoom
             InputBinary.Text = _ProjectSettings.InputFilePath;
             OutputBinary.Text = _ProjectSettings.OutputFilePath;
             BaseAddess.Text = _ProjectSettings.BaseAddress.ToString("X");
+            EndiannessPicker.SelectedIndex = _ProjectSettings.IsBigEndian ? 1 : 0;
         }
 
         public ProjectSettings _ProjectSettings { get; private set; }
