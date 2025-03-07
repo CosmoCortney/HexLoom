@@ -26,9 +26,7 @@
                 Clicked="onGenerateOutputFileClicked"
                 Text="Generate Output File" />
             <MenuFlyoutItem x:Name="MenuItemCloseProject" Text="Close Project" />
-
         </MenuBarItem>
-
     </ContentPage.MenuBarItems>
 
     <Grid
@@ -82,10 +80,7 @@
                     x:Name="EntityGroupStack"
                     Padding="10"
                     Spacing="10">
-
-
-                    <!--  Group items are added during runtime  -->
-
+                    <!--  Group items will be added during runtime  -->
                 </VerticalStackLayout>
             </ScrollView>
         </Grid>
