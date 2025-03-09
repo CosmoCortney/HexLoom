@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
     x:Class="HexLoom.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -15,10 +15,12 @@
             <MenuFlyoutItem
                 x:Name="MenuItemChangeSettings"
                 Clicked="onChangeSettingsMenuItemClicked"
+                IsEnabled="False"
                 Text="Project Settings" />
             <MenuFlyoutItem
                 x:Name="MenuItemSaveChanges"
                 Clicked="onSaveProjectClicked"
+                IsEnabled="False"
                 Text="Save Changes" />
             <MenuFlyoutItem x:Name="MenuItemOpenProject" Text="Open Project" />
             <MenuFlyoutItem
