@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -106,8 +106,9 @@ namespace HexLoom
                     entityObj["PrimaryType"] = entity._PrimaryType;
                     entityObj["SecondaryType"] = entity._SecondaryType;
                     entityObj["Offset"] = entity._EntityOffset;
+                    entityObj["Apply"] = entity._Apply;
 
-                    if(entity._PrimaryType == (Int32)PrimaryTypes.PRIMITIVE && entity._SecondaryType == (Int32)PrimitiveTypes.BOOL)
+                    if (entity._PrimaryType == (Int32)PrimaryTypes.PRIMITIVE && entity._SecondaryType == (Int32)PrimitiveTypes.BOOL)
                         entityObj["Value"] = entity._EntityValueBool;
                     else
                         entityObj["Value"] = entity._EntityValue;
