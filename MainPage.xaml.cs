@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -12,7 +12,7 @@ namespace HexLoom
             InitializeComponent();
             MenuItemNewProject.IsEnabled = true;
             MenuItemChangeSettings.IsEnabled = false;
-            setTestData();
+            //setTestData();
             HexEditorOriginal.SyncTarget = HexEditorEdited;
         }
 
@@ -168,6 +168,86 @@ namespace HexLoom
         private void onApplyClicked(object sender, EventArgs e)
         {
             applyChanges();
+        }
+
+        private void onProjectCloseClicked(object sender, EventArgs e)
+        {
+            if(_projectChanged)
+            {
+                var result = DisplayAlert("Warning", "You have unsaved changes. Do you want to save them before closing?", "Yes", "No").Result;
+
+                if (result)
+                    onSaveProjectClicked(sender, e);
+
+                _projectChanged = false;
+            }
+
+            _projectOpen = false;
+            MenuItemNewProject.IsEnabled = true;
+        }
+
+        private async void onOpenProjectClicked(object sender, EventArgs e)
+        {
+            _projectSettings = new ProjectSettings();
+            _binaryDataOriginal = new Byte[0];
+            _binaryDataEdited = new Byte[0];
+            _projectOpen = false;
+            _projectChanged = false;
+
+            try
+            {
+                PickOptions options = new PickOptions
+                {
+                    PickerTitle = "Select a project file.",
+                    FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                    {
+                        { DevicePlatform.WinUI, new[] { ".json" } }
+                    })
+                };
+
+                var result = await FilePicker.Default.PickAsync(options);
+
+                if (result == null)
+                    return;
+
+                Newtonsoft.Json.Linq.JObject project = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(result.FullPath));
+
+                if(project == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Invalid project file.", "OK");
+                    return;
+                }
+
+                _projectSettings.ProjectJsonPath = result.FullPath;
+                _projectSettings.ProjectName = project["ProjectName"].ToString();
+                _projectSettings.InputFilePath = project["InputFilePath"].ToString();
+                _projectSettings.OutputFilePath = project["OutputFilePath"].ToString();
+                _projectSettings.BaseAddress = (UInt64)project["BaseAddress"];
+                _projectSettings.IsBigEndian = (bool)project["IsBigEndian"];
+                _projectOpen = true;
+                EntityGroupStack.Children.Clear();
+
+                foreach (Newtonsoft.Json.Linq.JObject group in project["Groups"])
+                {
+                    if (group == null)
+                        return;
+
+                    EntityGroupStack.Children.Add(new EntityGroup(group));
+                }
+
+                loadBinary();
+                setHexEditors();
+                _projectChanged = true;
+                MenuItemNewProject.IsEnabled = false;
+                MenuItemChangeSettings.IsEnabled = true;
+                MenuItemSaveChanges.IsEnabled = true;
+                MenuItemCloseProject.IsEnabled = true;
+                this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
+            }
         }
 
         private async void applyChanges()

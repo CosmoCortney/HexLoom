@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Maui.Handlers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Newtonsoft.Json;
 
 namespace HexLoom
 {
@@ -107,13 +108,51 @@ namespace HexLoom
             WidgetHelpers.SetWidgetPadding<Microsoft.Maui.Controls.CheckBox>(0, 0, 0, 0);
         }
 
-        public bool _Apply => this.ApplyCheckbox.IsChecked;
-        public Int32 _PrimaryType => ((PickerItem)PrimaryTypePicker.SelectedItem).Id;
-        public Int32 _SecondaryType => ((PickerItem)SecondaryTypePicker.SelectedItem).Id;
-        public UInt64 _EntityOffset { get; private set; }
-        public string _EntityName => this.EntryItemName.Text;
-        public string _EntityValue => this.EntryItemValueText.Text;
-        public bool _EntityValueBool => this.EntryItemValueBool.IsChecked;
+        public Entity(Newtonsoft.Json.Linq.JObject json) : this()
+        {
+            _EntityName = json["EntityName"].ToString();
+            _PrimaryType = (Int32)json["PrimaryType"];
+            _SecondaryType = (Int32)json["SecondaryType"];
+            _EntityOffset = (UInt64)json["Offset"];
+            _Apply = (bool)json["Apply"];
+
+            if (_PrimaryType == (Int32)PrimaryTypes.PRIMITIVE && _SecondaryType == (Int32)PrimitiveTypes.BOOL)
+                _EntityValueBool = (bool)json["Value"];
+            else
+                _EntityValue = json["Value"].ToString();
+        }
+
+        public bool _Apply
+        {
+            get => this.ApplyCheckbox.IsChecked;
+            set => this.ApplyCheckbox.IsChecked = value;
+        }
+        public Int32 _PrimaryType
+        {
+            get => ((PickerItem)this.PrimaryTypePicker.SelectedItem).Id;
+            set => ((PickerItem)this.PrimaryTypePicker.SelectedItem).Id = value;
+        }
+        public Int32 _SecondaryType
+        {
+            get => ((PickerItem)this.SecondaryTypePicker.SelectedItem).Id;
+            set => ((PickerItem)this.SecondaryTypePicker.SelectedItem).Id = value;
+        }
+        public UInt64 _EntityOffset { get; set; }
+        public string _EntityName
+        {
+            get => this.EntryItemName.Text;
+            set => this.EntryItemName.Text = value;
+        }
+        public string _EntityValue
+        {
+            get => this.EntryItemValueText.Text;
+            set => this.EntryItemValueText.Text = value;
+        }
+        public bool _EntityValueBool
+        {
+            get => this.EntryItemValueBool.IsChecked;
+            set => this.EntryItemValueBool.IsChecked = value;
+        }
 
         private void onOffsetTextChanged(object sender, EventArgs e)
         {

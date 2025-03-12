@@ -15,8 +15,25 @@ namespace HexLoom
             WidgetHelpers.SetWidgetPadding<Microsoft.Maui.Controls.Button>(10, 2, 10, 2);
         }
 
+        public EntityGroup(Newtonsoft.Json.Linq.JObject json) : this()
+        {
+            _Name = json["GroupName"].ToString();
+
+            foreach (Newtonsoft.Json.Linq.JObject entity in json["Entities"])
+            {
+                if (entity == null)
+                    return;
+
+                _EntityStack.Children.Add(new Entity(entity));
+            }
+        }
+
         public VerticalStackLayout _EntityStack => this.EntityStack;
-        public string _Name => this.EntryGroupName.Text;
+        public string _Name
+        {
+            get => this.EntryGroupName.Text;
+            set => this.EntryGroupName.Text = value;
+        }
         private void onAddItemClicked(object sender, EventArgs e)
         {
             this.EntityStack.Children.Add(new Entity());
