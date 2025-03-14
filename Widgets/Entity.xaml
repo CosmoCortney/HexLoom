@@ -38,7 +38,8 @@
                 <CheckBox
                     x:Name="ApplyCheckbox"
                     Grid.Row="0"
-                    Grid.Column="1" />
+                    Grid.Column="1"
+                    CheckedChanged="onActiveChanged" />
 
                 <Entry
                     x:Name="EntryItemName"
@@ -49,6 +50,7 @@
                     HorizontalOptions="FillAndExpand"
                     MinimumHeightRequest="20"
                     Placeholder="Item Name"
+                    TextChanged="onEntityNameTextChanged"
                     TextColor="{StaticResource HexLoomTextColor}"
                     VerticalOptions="Center" />
 

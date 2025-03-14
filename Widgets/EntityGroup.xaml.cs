@@ -27,7 +27,6 @@ namespace HexLoom
                 _EntityStack.Children.Add(new Entity(entity));
             }
         }
-
         public VerticalStackLayout _EntityStack => this.EntityStack;
         public string _Name
         {
@@ -37,11 +36,13 @@ namespace HexLoom
         private void onAddItemClicked(object sender, EventArgs e)
         {
             this.EntityStack.Children.Add(new Entity());
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
 
         private void onPanUpdated(object sender, PanUpdatedEventArgs e)
         {
             WidgetHelpers.PanUpdated(this, sender, e);
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
 
         private void onDeleteClicked(object sender, EventArgs e)
@@ -50,6 +51,13 @@ namespace HexLoom
 
             if (parentStack != null)
                 parentStack.Children.Remove(this);
+
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
+        }
+
+        private void onGroupNameTextChanged(object sender, EventArgs e)
+        {
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
     }
 }

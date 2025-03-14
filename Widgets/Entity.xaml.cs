@@ -164,6 +164,18 @@ namespace HexLoom
             {
                 _EntityOffset = 0;
             }
+
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
+        }
+
+        private void onActiveChanged(object sender, EventArgs e)
+        {
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
+        }
+
+        private void onEntityNameTextChanged(object sender, EventArgs e)
+        {
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
 
         private void setupPirmaryTypePicker()
@@ -184,6 +196,7 @@ namespace HexLoom
         private void onPanUpdated(object sender, PanUpdatedEventArgs e)
         {
             WidgetHelpers.PanUpdated(this, sender, e);
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
 
         private void onDeleteClicked(object sender, EventArgs e)
@@ -192,6 +205,8 @@ namespace HexLoom
 
             if (parentStack != null)
                 parentStack.Children.Remove(this);
+
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
 
         private void onSecondaryTypeIndexChanged(object sender, EventArgs e)
@@ -210,11 +225,14 @@ namespace HexLoom
                 EntryItemValueText.IsVisible = false;
                 EntryItemValueBool.IsVisible = true;
             }
+
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
 
         private void onPrimaryTypeIndexChanged(object sender, EventArgs e)
         {
             setupSecondaryDatatypePicker(PrimaryTypePicker.SelectedIndex);
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
 
         private void setupSecondaryDatatypePicker(Int32 primaryType)

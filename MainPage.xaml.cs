@@ -30,6 +30,15 @@ namespace HexLoom
         private ProjectSettings _projectSettings;
         private bool _projectOpen = false;
         private bool _projectChanged = false;
+        public bool _ProjectChanged
+        { 
+            get => _projectChanged;
+            set
+            {
+                _projectChanged = value;
+                MenuItemSaveChanges.IsEnabled = value;
+            }
+        }
         private Byte[] _binaryDataOriginal;
         private Byte[] _binaryDataEdited;
 
@@ -55,7 +64,7 @@ namespace HexLoom
                 if (_projectSettings.IsValid())
                 {
                     _projectOpen = true;
-                    _projectChanged = true;
+                    _ProjectChanged = true;
                     MenuItemNewProject.IsEnabled = false;
                     MenuItemChangeSettings.IsEnabled = true;
                     MenuItemSaveChanges.IsEnabled = true;
@@ -67,13 +76,13 @@ namespace HexLoom
             if (sender is Page page)
                 page.Disappearing -= OnNewProjectPageDisappearing;
 
-            if ((_projectOpen && _projectChanged))
+            if ((_projectOpen && _ProjectChanged))
                 loadBinary();
         }
 
         private void onSaveProjectClicked(object sender, EventArgs e)
         {
-            if (!_projectOpen || !_projectChanged)
+            if (!_projectOpen || !_ProjectChanged)
                 return;
 
             JObject project = new JObject();
@@ -122,7 +131,7 @@ namespace HexLoom
 
             project["Groups"] = groupArr;
             System.IO.File.WriteAllText(_projectSettings.ProjectJsonPath, project.ToString());
-            _projectChanged = false;
+            _ProjectChanged = false;
         }
 
         private bool loadBinary()
@@ -172,18 +181,33 @@ namespace HexLoom
 
         private void onProjectCloseClicked(object sender, EventArgs e)
         {
-            if(_projectChanged)
+            if(_ProjectChanged)
             {
                 var result = DisplayAlert("Warning", "You have unsaved changes. Do you want to save them before closing?", "Yes", "No").Result;
 
                 if (result)
                     onSaveProjectClicked(sender, e);
 
-                _projectChanged = false;
+                _ProjectChanged = false;
             }
 
             _projectOpen = false;
             MenuItemNewProject.IsEnabled = true;
+            _binaryDataOriginal = new Byte[0];
+            _binaryDataEdited = new Byte[0];
+            EntityGroupStack.Children.Clear();
+            this.Content.Window.Title = "HexLoom";
+            setMenuItemStates(true, false, false, true, false, false);
+        }
+
+        private void setMenuItemStates(bool newProject, bool changeSettings, bool saveChanges, bool openProject, bool generateFile, bool closeProject)
+        {
+            MenuItemNewProject.IsEnabled = newProject;
+            MenuItemChangeSettings.IsEnabled = changeSettings;
+            _ProjectChanged = saveChanges;
+            MenuItemOpenProject.IsEnabled = openProject;
+            MenuItemGenerate.IsEnabled = generateFile;
+            MenuItemCloseProject.IsEnabled = closeProject;
         }
 
         private async void onOpenProjectClicked(object sender, EventArgs e)
@@ -192,7 +216,7 @@ namespace HexLoom
             _binaryDataOriginal = new Byte[0];
             _binaryDataEdited = new Byte[0];
             _projectOpen = false;
-            _projectChanged = false;
+            _ProjectChanged = false;
 
             try
             {
@@ -237,11 +261,8 @@ namespace HexLoom
 
                 loadBinary();
                 setHexEditors();
-                _projectChanged = true;
-                MenuItemNewProject.IsEnabled = false;
-                MenuItemChangeSettings.IsEnabled = true;
-                MenuItemSaveChanges.IsEnabled = true;
-                MenuItemCloseProject.IsEnabled = true;
+                _ProjectChanged = true;
+                setMenuItemStates(false, true, false, false, true, true);
                 this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
             }
             catch (Exception ex)

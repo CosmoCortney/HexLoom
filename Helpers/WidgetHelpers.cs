@@ -92,5 +92,18 @@ namespace HexLoom
                 });
             }
         }
+
+        public static MainPage GetMainPage()
+        {
+            var currentPage = Application.Current.MainPage;
+
+            while (currentPage is NavigationPage navigationPage)
+                currentPage = navigationPage.CurrentPage;
+
+            while (currentPage is AppShell appShell)
+                currentPage = appShell.CurrentPage;
+
+            return currentPage as MainPage;
+        }
     }
 }

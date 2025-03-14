@@ -29,10 +29,12 @@
             <MenuFlyoutItem
                 x:Name="MenuItemGenerate"
                 Clicked="onGenerateOutputFileClicked"
+                IsEnabled="False"
                 Text="Generate Output File" />
             <MenuFlyoutItem
                 x:Name="MenuItemCloseProject"
                 Clicked="onProjectCloseClicked"
+                IsEnabled="False"
                 Text="Close Project" />
         </MenuBarItem>
     </ContentPage.MenuBarItems>

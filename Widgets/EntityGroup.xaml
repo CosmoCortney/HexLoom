@@ -34,6 +34,7 @@
                 Grid.Column="1"
                 HeightRequest="20"
                 MinimumHeightRequest="20"
+                TextChanged="onGroupNameTextChanged"
                 Placeholder="Group Name" />
 
             <Button
