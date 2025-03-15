@@ -102,6 +102,7 @@ namespace HexLoom
 
                 var groupObj = new JObject();
                 groupObj["GroupName"] = entityGroup._Name;
+                groupObj["Collapse"] = entityGroup._Collapse;
                 var entityArr = new JArray();
 
                 foreach (var entityS in entityGroup._EntityStack.Children)

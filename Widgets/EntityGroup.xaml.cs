@@ -18,6 +18,7 @@ namespace HexLoom
         public EntityGroup(Newtonsoft.Json.Linq.JObject json) : this()
         {
             _Name = json["GroupName"].ToString();
+            _Collapse = json["Collapse"].ToObject<bool>();
 
             foreach (Newtonsoft.Json.Linq.JObject entity in json["Entities"])
             {
@@ -27,12 +28,24 @@ namespace HexLoom
                 _EntityStack.Children.Add(new Entity(entity));
             }
         }
+
         public VerticalStackLayout _EntityStack => this.EntityStack;
         public string _Name
         {
             get => this.EntryGroupName.Text;
             set => this.EntryGroupName.Text = value;
         }
+
+        public bool _Collapse
+        {
+            get => this.CheckBoxCollapse.IsChecked;
+            set
+            {
+                this.CheckBoxCollapse.IsChecked = value;
+                this.EntityScrollView.MaximumHeightRequest = value ? 25.0 : 200.0;
+            }
+        }
+
         private void onAddItemClicked(object sender, EventArgs e)
         {
             this.EntityStack.Children.Add(new Entity());
@@ -63,6 +76,7 @@ namespace HexLoom
         private void onCollapseChanged(object sender, EventArgs e)
         {
             this.EntityScrollView.MaximumHeightRequest = this.CheckBoxCollapse.IsChecked ? 25.0 : 200.0;
+            WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
     }
 }
