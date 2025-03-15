@@ -59,5 +59,10 @@ namespace HexLoom
         {
             WidgetHelpers.GetMainPage()._ProjectChanged = true;
         }
+
+        private void onCollapseChanged(object sender, EventArgs e)
+        {
+            this.EntityScrollView.MaximumHeightRequest = this.CheckBoxCollapse.IsChecked ? 25.0 : 200.0;
+        }
     }
 }
