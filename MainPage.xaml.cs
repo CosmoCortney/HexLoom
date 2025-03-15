@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -12,7 +12,6 @@ namespace HexLoom
             InitializeComponent();
             MenuItemNewProject.IsEnabled = true;
             MenuItemChangeSettings.IsEnabled = false;
-            //setTestData();
             HexEditorOriginal.SyncTarget = HexEditorEdited;
         }
 
@@ -628,20 +627,6 @@ namespace HexLoom
         {
             byte[] value = MorphText.ConvertString(entity);
             HexEditorEdited.SetBytes(value, entity._EntityOffset);
-        }
-
-        private void setTestData()
-        {
-            _projectSettings = new ProjectSettings();
-            _projectSettings.ProjectName = "Test Project";
-            _projectSettings.InputFilePath = "C:\\Users\\s_sch\\Documents\\line(jpn)__,lz.rel";
-            _projectSettings.OutputFilePath = "C:\\Users\\s_sch\\Documents\\testEdited.bin";
-            _projectSettings.ProjectJsonPath = "C:\\Users\\s_sch\\Documents\\HexLoom\\Test Project.json";
-            _projectSettings.IsBigEndian = true;
-            _projectSettings.BaseAddress = 0;
-            _projectOpen = true;
-            loadBinary();
-            setHexEditors();
         }
     }
 }
