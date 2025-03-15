@@ -1,4 +1,4 @@
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using HexEditor;
 using System.Runtime.InteropServices;
@@ -147,7 +147,6 @@ namespace HexLoom
                 return false;
 
             _binaryDataEdited = (Byte[])_binaryDataOriginal.Clone();
-            setHexEditors();
             return true;
         }
 
@@ -187,22 +186,36 @@ namespace HexLoom
                 _ProjectChanged = false;
             }
 
-            _projectOpen = false;
-            _binaryDataOriginal = new Byte[0];
-            _binaryDataEdited = new Byte[0];
-            EntityGroupStack.Children.Clear();
+            resetEditors();
+            resetList();
             this.Content.Window.Title = "HexLoom";
             setMenuItemStates(true, false, false, true, false, false);
+        }
+
+        private void resetEditors()
+        {
+            _binaryDataOriginal = new Byte[0];
+            _binaryDataEdited = new Byte[0];
+            HexEditorOriginal.Reset();
+            HexEditorEdited.Reset();
+        }
+
+        private void resetList()
+        {
+            EntityGroupStack.Children.Clear();
+            ButtonAddGroup.IsEnabled = false;
+            ButtonApply.IsEnabled = false;
         }
 
         private void setMenuItemStates(bool newProject, bool changeSettings, bool saveChanges, bool openProject, bool generateFile, bool closeProject)
         {
             MenuItemNewProject.IsEnabled = newProject;
             MenuItemChangeSettings.IsEnabled = changeSettings;
-            _ProjectChanged = saveChanges;
+            _ProjectChanged = saveChanges; //also sets MenuItemSaveChanges.IsEnabled
             MenuItemOpenProject.IsEnabled = openProject;
             MenuItemGenerate.IsEnabled = generateFile;
             MenuItemCloseProject.IsEnabled = closeProject;
+            _projectOpen = closeProject;
         }
 
         private async void onOpenProjectClicked(object sender, EventArgs e)
@@ -210,8 +223,6 @@ namespace HexLoom
             _projectSettings = new ProjectSettings();
             _binaryDataOriginal = new Byte[0];
             _binaryDataEdited = new Byte[0];
-            _projectOpen = false;
-            _ProjectChanged = false;
 
             try
             {
@@ -243,7 +254,6 @@ namespace HexLoom
                 _projectSettings.OutputFilePath = project["OutputFilePath"].ToString();
                 _projectSettings.BaseAddress = (UInt64)project["BaseAddress"];
                 _projectSettings.IsBigEndian = (bool)project["IsBigEndian"];
-                _projectOpen = true;
                 EntityGroupStack.Children.Clear();
 
                 foreach (Newtonsoft.Json.Linq.JObject group in project["Groups"])
@@ -254,16 +264,25 @@ namespace HexLoom
                     EntityGroupStack.Children.Add(new EntityGroup(group));
                 }
 
-                loadBinary();
-                setHexEditors();
-                _ProjectChanged = true;
                 setMenuItemStates(false, true, false, false, true, true);
+
+                if (!loadBinary())
+                    return;
+
+                setHexEditors();
                 this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
+                enableListButtons();
             }
             catch (Exception ex)
             {
                 await Application.Current.MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
+        }
+
+        private void enableListButtons()
+        {
+            ButtonAddGroup.IsEnabled = true;
+            ButtonApply.IsEnabled = true;
         }
 
         private async void applyChanges()

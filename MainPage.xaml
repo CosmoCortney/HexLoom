@@ -66,6 +66,7 @@
                 Grid.Column="2"
                 Clicked="onAddGroupClicked"
                 HorizontalOptions="Fill"
+                IsEnabled="False"
                 Text="Add Group"
                 TextColor="{StaticResource HexLoomTextColor}"
                 VerticalOptions="Center" />
@@ -76,6 +77,7 @@
                 Grid.Column="4"
                 Clicked="onApplyClicked"
                 HorizontalOptions="Fill"
+                IsEnabled="False"
                 Text="Apply"
                 TextColor="{StaticResource HexLoomTextColor}"
                 VerticalOptions="Center" />
