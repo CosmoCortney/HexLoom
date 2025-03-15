@@ -62,13 +62,9 @@ namespace HexLoom
 
                 if (_projectSettings.IsValid())
                 {
-                    _projectOpen = true;
-                    _ProjectChanged = true;
-                    MenuItemNewProject.IsEnabled = false;
-                    MenuItemChangeSettings.IsEnabled = true;
-                    MenuItemSaveChanges.IsEnabled = true;
-                    MenuItemCloseProject.IsEnabled = true;
+                    setMenuItemStates(false, true, true, false, true, true);
                     this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
+                    enableListButtons();
                 }
             }
 
