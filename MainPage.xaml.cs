@@ -180,11 +180,11 @@ namespace HexLoom
             applyChanges();
         }
 
-        private void onProjectCloseClicked(object sender, EventArgs e)
+        private async void onProjectCloseClicked(object sender, EventArgs e)
         {
             if(_ProjectChanged)
             {
-                var result = DisplayAlert("Warning", "You have unsaved changes. Do you want to save them before closing?", "Yes", "No").Result;
+                var result = await DisplayAlert("Warning", "You have unsaved changes. Do you want to save them before closing?", "Yes", "No");
 
                 if (result)
                     onSaveProjectClicked(sender, e);
@@ -193,7 +193,6 @@ namespace HexLoom
             }
 
             _projectOpen = false;
-            MenuItemNewProject.IsEnabled = true;
             _binaryDataOriginal = new Byte[0];
             _binaryDataEdited = new Byte[0];
             EntityGroupStack.Children.Clear();
