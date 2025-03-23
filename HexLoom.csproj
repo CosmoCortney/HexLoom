@@ -72,13 +72,19 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Reference Include="HexEditor">
-			<HintPath></HintPath>
+
+
+	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
+		<Reference Include="HexLoom">
+			<HintPath>MorphText.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
-
+	<ItemGroup Condition="'$(Configuration)' == 'Release'">
+		<Reference Include="HexLoom">
+			<HintPath>MorphText.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<Reference Include="HexEditor">

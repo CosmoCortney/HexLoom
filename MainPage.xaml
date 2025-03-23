@@ -68,7 +68,6 @@
                 HorizontalOptions="Fill"
                 IsEnabled="False"
                 Text="Add Group"
-                TextColor="{StaticResource HexLoomTextColor}"
                 VerticalOptions="Center" />
 
             <Button
@@ -79,7 +78,6 @@
                 HorizontalOptions="Fill"
                 IsEnabled="False"
                 Text="Apply"
-                TextColor="{StaticResource HexLoomTextColor}"
                 VerticalOptions="Center" />
 
             <ScrollView
