@@ -63,7 +63,6 @@ namespace HexLoom
                 if (_projectSettings.IsValid())
                 {
                     setMenuItemStates(false, true, true, false, true, true);
-                    this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
                     enableListButtons();
                 }
             }
@@ -72,7 +71,12 @@ namespace HexLoom
                 page.Disappearing -= OnNewProjectPageDisappearing;
 
             if ((_projectOpen && _ProjectChanged))
-                loadBinary();
+                if (!loadBinary())
+                    return;
+
+            setHexEditors();
+            this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
+            enableListButtons();
         }
 
         private void onSaveProjectClicked(object sender, EventArgs e)
