@@ -9,20 +9,20 @@ namespace HexLoom
 {
     internal class MorphText
     {
-        [DllImport("dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char*
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char*
         public static extern IntPtr ConvertWcharStringToCharStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
-        [DllImport("dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to wchar_t*
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to wchar_t*
         public static extern IntPtr ConvertWcharStringToWcharStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
 
-        [DllImport("dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char32_t*
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)] // wchar_t* to char32_t*
         public static extern IntPtr ConvertWcharStringToU32charStringUnsafe(char[] input, int inputEncoding, int outputEncoding);
-        [DllImport("dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void FreeMemoryCharPtr(IntPtr ptr);
 
-        [DllImport("dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void FreeMemoryWcharPtr(IntPtr ptr);
 
-        [DllImport("dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("MorphText.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern void FreeMemoryU32charPtr(IntPtr ptr);
 
         public static int GetByteArrayLength(IntPtr ptr)
