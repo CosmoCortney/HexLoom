@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
 
 namespace HexLoom
 {
@@ -173,6 +174,18 @@ namespace HexLoom
                             throw new InvalidDataException($"Ill-formed RGBA color string. Did you ensure to include 4 elements of 2 characters each?");
 
                     return res.Substring(1);
+                }
+            }
+        }
+
+        public static void SetPickerIndexByIs(Picker picker, Int32 id)
+        {
+            for (Int32 i = 0; i < picker.ItemsSource.Count; ++i)
+            {
+                if (((PickerItem)picker.ItemsSource[i]).Id == id)
+                {
+                    picker.SelectedIndex = i;
+                    break;
                 }
             }
         }

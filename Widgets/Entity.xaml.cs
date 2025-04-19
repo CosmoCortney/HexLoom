@@ -113,7 +113,7 @@ namespace HexLoom
             _EntityName = json["EntityName"].ToString();
             _PrimaryType = (Int32)json["PrimaryType"];
             _SecondaryType = (Int32)json["SecondaryType"];
-            _EntityOffset = (UInt64)json["Offset"];
+            EntryItemOffset.Text = ((UInt64)json["Offset"]).ToString("X");
             _Apply = (bool)json["Apply"];
 
             if (_PrimaryType == (Int32)PrimaryTypes.PRIMITIVE && _SecondaryType == (Int32)PrimitiveTypes.BOOL)
@@ -130,12 +130,18 @@ namespace HexLoom
         public Int32 _PrimaryType
         {
             get => ((PickerItem)this.PrimaryTypePicker.SelectedItem).Id;
-            set => ((PickerItem)this.PrimaryTypePicker.SelectedItem).Id = value;
+            set
+            {
+                Helpers.SetPickerIndexByIs(this.PrimaryTypePicker, value);
+            }
         }
         public Int32 _SecondaryType
         {
             get => ((PickerItem)this.SecondaryTypePicker.SelectedItem).Id;
-            set => ((PickerItem)this.SecondaryTypePicker.SelectedItem).Id = value;
+            set
+            {
+                Helpers.SetPickerIndexByIs(this.SecondaryTypePicker, value);
+            }
         }
         public UInt64 _EntityOffset { get; set; }
         public string _EntityName
