@@ -27,8 +27,8 @@
 		<ApplicationId>com.companyname.hexloom</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
-		<ApplicationVersion>1</ApplicationVersion>
+		<ApplicationDisplayVersion>1.0.0</ApplicationDisplayVersion>
+		<ApplicationVersion>0</ApplicationVersion>
 
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
@@ -72,28 +72,26 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
 
-
-
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
 		<Reference Include="HexLoom">
-			<HintPath>MorphText.dll</HintPath>
+			<HintPath>..\MAUI-Hex-Editor\lib\MorphText\x64-Debug\MorphText.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
 		<Reference Include="HexLoom">
-			<HintPath>MorphText.dll</HintPath>
+			<HintPath>Modules\MorphText\x64-Release\MorphText.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Debug'">
-		<Reference Include="HexEditor">
+		<Reference Include="HexLoom">
 			<HintPath>..\MAUI-Hex-Editor\bin\Debug\net9.0-windows10.0.19041.0\HexEditor.dll</HintPath>
 		</Reference>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)' == 'Release'">
-		<Reference Include="HexEditor">
+		<Reference Include="HexLoom">
 			<HintPath>..\MAUI-Hex-Editor\bin\Release\net9.0-windows10.0.19041.0\HexEditor.dll</HintPath>
 		</Reference>
 	</ItemGroup>
@@ -119,6 +117,11 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Widgets\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Modules\MorphText\x64-Debug\MorphText.dll">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>

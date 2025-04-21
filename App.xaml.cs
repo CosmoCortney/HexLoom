@@ -22,7 +22,9 @@ namespace HexLoom
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            Window window = new Window(new AppShell());
+            Helpers.SetWindowTitle(window, "");
+            return window;
         }
     }
 }

@@ -189,5 +189,22 @@ namespace HexLoom
                 }
             }
         }
+
+        public static void SetWindowTitle(Window window, string title)
+        {
+            if(window == null)
+                return;
+
+            string versionString = AppInfo.VersionString;
+            window.Title = AppInfo.Name + " v" + (versionString.Count(c => c == '.') == 3 ? versionString.Substring(0, versionString.LastIndexOfAny(new char[] { '.' })) : versionString);
+
+            if (title == null)
+                return;
+
+            if (title.Length == 0)
+                return;
+
+            window.Title += " - " + title;
+        }
     }
 }

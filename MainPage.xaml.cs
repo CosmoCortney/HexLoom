@@ -75,7 +75,7 @@ namespace HexLoom
                     return;
 
             setHexEditors();
-            this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
+            Helpers.SetWindowTitle(this.Content.Window, _projectSettings.ProjectName);
             enableListButtons();
         }
 
@@ -192,7 +192,7 @@ namespace HexLoom
 
             resetEditors();
             resetList();
-            this.Content.Window.Title = "HexLoom";
+            Helpers.SetWindowTitle(this.Content.Window, "");
             setMenuItemStates(true, false, false, true, false, false);
         }
 
@@ -274,7 +274,7 @@ namespace HexLoom
                     return;
 
                 setHexEditors();
-                this.Content.Window.Title = "HexLoom - " + _projectSettings.ProjectName;
+                Helpers.SetWindowTitle(this.Content.Window, _projectSettings.ProjectName);
                 enableListButtons();
             }
             catch (Exception ex)
