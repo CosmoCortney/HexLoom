@@ -12,7 +12,10 @@
         StrokeShape="RoundRectangle 0, 15, 15, 0"
         StrokeThickness="4">
 
-        <Grid ColumnDefinitions=".05*, .3*, Auto, Auto, Auto, Auto" RowDefinitions="Auto, .95*">
+        <Grid
+            BackgroundColor="#222222"
+            ColumnDefinitions=".05*, .3*, Auto, Auto, Auto, Auto"
+            RowDefinitions="Auto, .95*">
 
             <Image
                 x:Name="DragHandle"
@@ -48,26 +51,33 @@
                 x:Name="CheckBoxCollapse"
                 Grid.Row="0"
                 Grid.Column="3"
-                CheckedChanged="onCollapseChanged" />
+                CheckedChanged="onCollapseChanged"
+                MinimumWidthRequest="30" />
 
             <Button
                 x:Name="ButtonAddItem"
                 Grid.Row="0"
                 Grid.Column="4"
+                Margin="0,0,5,0"
                 Clicked="onAddItemClicked"
-                HeightRequest="20"
-                MinimumHeightRequest="20"
-                Text="Add Itme" />
+                HeightRequest="30"
+                MinimumHeightRequest="30"
+                MinimumWidthRequest="70"
+                Text="Add Item" />
 
             <Button
                 x:Name="ButtonDelete"
                 Grid.Row="0"
                 Grid.Column="5"
+                Margin="0,0,5,0"
+                BackgroundColor="{StaticResource Nope}"
                 Clicked="onDeleteClicked"
-                HeightRequest="20"
-                MinimumHeightRequest="20"
+                FontAttributes="Bold"
+                HeightRequest="30"
+                MinimumHeightRequest="30"
+                MinimumWidthRequest="30"
                 Text="X"
-                TextColor="{StaticResource Nope}" />
+                TextColor="{StaticResource HexLoomTextColor}" />
 
             <ScrollView
                 x:Name="EntityScrollView"

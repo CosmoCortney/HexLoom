@@ -17,7 +17,7 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Background="#333333"
+                Background="#222222"
                 ColumnDefinitions=".05*, .075*, .264*, .266*, .266*, .1*"
                 RowDefinitions="22">
 
@@ -41,56 +41,70 @@
                     Grid.Column="1"
                     CheckedChanged="onActiveChanged" />
 
-                <Entry
-                    x:Name="EntryItemName"
+                <Border
                     Grid.Row="0"
                     Grid.Column="2"
-                    FontSize="11"
-                    HeightRequest="20"
-                    HorizontalOptions="FillAndExpand"
-                    MinimumHeightRequest="20"
-                    Placeholder="Item Name"
-                    TextChanged="onEntityNameTextChanged"
-                    TextColor="{StaticResource HexLoomTextColor}"
-                    VerticalOptions="Center" />
+                    Stroke="#888888"
+                    StrokeThickness="2">
+                    <Entry
+                        x:Name="EntryItemName"
+                        FontSize="11"
+                        HeightRequest="20"
+                        HorizontalOptions="FillAndExpand"
+                        MinimumHeightRequest="20"
+                        Placeholder="Item Name"
+                        TextChanged="onEntityNameTextChanged"
+                        TextColor="{StaticResource HexLoomTextColor}"
+                        VerticalOptions="Center" />
+                </Border>
 
-                <Entry
-                    x:Name="EntryItemOffset"
+                <Border
                     Grid.Row="0"
                     Grid.Column="3"
-                    FontFamily="Consolas"
-                    FontSize="11"
-                    HeightRequest="20"
-                    MinimumHeightRequest="20"
-                    Placeholder="Offset"
-                    TextChanged="onOffsetTextChanged"
-                    TextColor="{StaticResource HexLoomTextColor}" />
+                    Stroke="#888888"
+                    StrokeThickness="2">
+                    <Entry
+                        x:Name="EntryItemOffset"
+                        FontFamily="Consolas"
+                        FontSize="11"
+                        HeightRequest="20"
+                        MinimumHeightRequest="20"
+                        Placeholder="Offset"
+                        TextChanged="onOffsetTextChanged"
+                        TextColor="{StaticResource HexLoomTextColor}" />
+                </Border>
 
-                <Picker
-                    x:Name="PrimaryTypePicker"
+                <Border
                     Grid.Row="0"
                     Grid.Column="4"
-                    FontSize="11"
-                    HeightRequest="20"
-                    MinimumHeightRequest="20"
-                    SelectedIndex="0"
-                    SelectedIndexChanged="onPrimaryTypeIndexChanged"
-                    SelectedItem="0"
-                    TextColor="{StaticResource HexLoomTextColor}">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}" />
-                    </Picker.ItemsSource>
-                </Picker>
+                    Stroke="#888888"
+                    StrokeThickness="2">
+                    <Picker
+                        x:Name="PrimaryTypePicker"
+                        FontSize="11"
+                        HeightRequest="20"
+                        MinimumHeightRequest="20"
+                        SelectedIndex="0"
+                        SelectedIndexChanged="onPrimaryTypeIndexChanged"
+                        SelectedItem="0"
+                        TextColor="{StaticResource HexLoomTextColor}">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}" />
+                        </Picker.ItemsSource>
+                    </Picker>
+                </Border>
 
                 <Button
                     x:Name="ButtonDelete"
                     Grid.Row="0"
                     Grid.Column="5"
+                    BackgroundColor="{StaticResource Nope}"
                     Clicked="onDeleteClicked"
+                    FontAttributes="Bold"
                     HeightRequest="20"
                     MinimumHeightRequest="5"
                     Text="X"
-                    TextColor="{StaticResource Nope}"
+                    TextColor="{StaticResource HexLoomTextColor}"
                     WidthRequest="10" />
             </Grid>
 
@@ -102,34 +116,42 @@
                 ColumnDefinitions=".25*, .75*"
                 RowDefinitions="22">
 
-                <Picker
-                    x:Name="SecondaryTypePicker"
+                <Border
                     Grid.Row="0"
                     Grid.Column="0"
-                    FontSize="11"
-                    HeightRequest="20"
-                    MinimumHeightRequest="20"
-                    SelectedIndex="0"
-                    SelectedIndexChanged="onSecondaryTypeIndexChanged"
-                    SelectedItem="0"
-                    TextColor="{StaticResource HexLoomTextColor}">
+                    Stroke="#888888"
+                    StrokeThickness="2">
+                    <Picker
+                        x:Name="SecondaryTypePicker"
+                        FontSize="11"
+                        HeightRequest="20"
+                        MinimumHeightRequest="20"
+                        SelectedIndex="0"
+                        SelectedIndexChanged="onSecondaryTypeIndexChanged"
+                        SelectedItem="0"
+                        TextColor="{StaticResource HexLoomTextColor}">
 
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}" />
-                    </Picker.ItemsSource>
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}" />
+                        </Picker.ItemsSource>
 
-                </Picker>
+                    </Picker>
+                </Border>
 
-                <Entry
-                    x:Name="EntryItemValueText"
+                <Border
                     Grid.Row="0"
                     Grid.Column="1"
-                    FontFamily="Consolas"
-                    FontSize="11"
-                    HeightRequest="20"
-                    MinimumHeightRequest="20"
-                    Placeholder="Value"
-                    TextColor="{StaticResource HexLoomTextColor}" />
+                    Stroke="#888888"
+                    StrokeThickness="2">
+                    <Entry
+                        x:Name="EntryItemValueText"
+                        FontFamily="Consolas"
+                        FontSize="11"
+                        HeightRequest="20"
+                        MinimumHeightRequest="20"
+                        Placeholder="Value"
+                        TextColor="{StaticResource HexLoomTextColor}" />
+                </Border>
 
                 <CheckBox
                     x:Name="EntryItemValueBool"
