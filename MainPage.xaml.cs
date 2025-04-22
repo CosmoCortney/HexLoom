@@ -88,8 +88,8 @@ namespace HexLoom
             if (!_projectOpen || !_ProjectChanged)
                 return;
 
-            JObject project = Helpers.SerializeProjectSettings(_projectSettings);
-            project["Groups"] = Helpers.SerializeEntityGroups(EntityGroupStack.Children);
+            JObject project = JsonHelpers.SerializeProjectSettings(_projectSettings);
+            project["Groups"] = JsonHelpers.SerializeEntityGroups(EntityGroupStack.Children);
             System.IO.File.WriteAllText(_projectSettings.ProjectJsonPath, project.ToString());
             _ProjectChanged = false;
         }
@@ -208,22 +208,9 @@ namespace HexLoom
                     return;
                 }
 
+                _projectSettings = JsonHelpers.DeSerializeProjectSettings(project);
                 _projectSettings.ProjectJsonPath = result.FullPath;
-                _projectSettings.ProjectName = project["ProjectName"].ToString();
-                _projectSettings.InputFilePath = project["InputFilePath"].ToString();
-                _projectSettings.OutputFilePath = project["OutputFilePath"].ToString();
-                _projectSettings.BaseAddress = (UInt64)project["BaseAddress"];
-                _projectSettings.IsBigEndian = (bool)project["IsBigEndian"];
-                EntityGroupStack.Children.Clear();
-
-                foreach (Newtonsoft.Json.Linq.JObject group in project["Groups"])
-                {
-                    if (group == null)
-                        return;
-
-                    EntityGroupStack.Children.Add(new EntityGroup(group));
-                }
-
+                JsonHelpers.DeSerializeEntityGroups(EntityGroupStack.Children, project);
                 setMenuItemStates(false, true, false, false, true, true);
 
                 if (!loadBinary())
