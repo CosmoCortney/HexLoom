@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace HexLoom.Helpers
+namespace HexLoom
 {
     class JsonHelpers
     {
@@ -72,7 +72,7 @@ namespace HexLoom.Helpers
                 var groupObj = new JObject();
                 groupObj["GroupName"] = entityGroup._Name;
                 groupObj["Collapse"] = entityGroup._Collapse;
-                var entityArr = Helpers.SerializeEntities(entityGroup);
+                var entityArr = JsonHelpers.SerializeEntities(entityGroup);
                 groupObj["Entities"] = entityArr;
                 groupArr.Add(groupObj);
             }
