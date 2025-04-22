@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Maui.Controls;
 
 namespace HexLoom
 {
@@ -143,39 +144,39 @@ namespace HexLoom
         {
             string res = value.Replace(" ", "");
 
-            switch(type)
+            switch (type)
             {
                 case (Int32)ColorTypes.RGBF:
                 case (Int32)ColorTypes.RGBAF:
-                {
-                    if(type == (Int32)ColorTypes.RGBF)
-                        if (res.Count(f => f == ',') != 2)
-                            throw new InvalidDataException($"Ill-formed RGBF color string. Did you ensure to include 3 elements separated by ','?");
+                    {
+                        if (type == (Int32)ColorTypes.RGBF)
+                            if (res.Count(f => f == ',') != 2)
+                                throw new InvalidDataException($"Ill-formed RGBF color string. Did you ensure to include 3 elements separated by ','?");
 
-                    if(type == (Int32)ColorTypes.RGBAF)
-                        if (res.Count(f => f == ',') != 3)
-                            throw new InvalidDataException($"Ill-formed RGBFA color string. Did you ensure to include 4 elements separated by ','?");
+                        if (type == (Int32)ColorTypes.RGBAF)
+                            if (res.Count(f => f == ',') != 3)
+                                throw new InvalidDataException($"Ill-formed RGBFA color string. Did you ensure to include 4 elements separated by ','?");
 
-                    if (!res.StartsWith("[") || !res.EndsWith("]"))
-                        throw new InvalidDataException($"Ill-formed RGBF(A) color string. Did you ensure to prepand '[' and append ']'?");
+                        if (!res.StartsWith("[") || !res.EndsWith("]"))
+                            throw new InvalidDataException($"Ill-formed RGBF(A) color string. Did you ensure to prepand '[' and append ']'?");
 
-                    return res;
-                }
+                        return res;
+                    }
                 default: //RGB, RGBA
-                {
-                    if (!res.StartsWith("#"))
-                        throw new InvalidDataException($"Ill-formed RGB(A) color string. Did you forget to prepend '#'?");
+                    {
+                        if (!res.StartsWith("#"))
+                            throw new InvalidDataException($"Ill-formed RGB(A) color string. Did you forget to prepend '#'?");
 
-                    if (type == (Int32)ColorTypes.RGB)
-                        if(res.Length != 7)
-                            throw new InvalidDataException($"Ill-formed RGB color string. Did you ensure to include 3 elements of 2 characters each?");
+                        if (type == (Int32)ColorTypes.RGB)
+                            if (res.Length != 7)
+                                throw new InvalidDataException($"Ill-formed RGB color string. Did you ensure to include 3 elements of 2 characters each?");
 
-                    if (type == (Int32)ColorTypes.RGBA)
-                        if (res.Length != 9)
-                            throw new InvalidDataException($"Ill-formed RGBA color string. Did you ensure to include 4 elements of 2 characters each?");
+                        if (type == (Int32)ColorTypes.RGBA)
+                            if (res.Length != 9)
+                                throw new InvalidDataException($"Ill-formed RGBA color string. Did you ensure to include 4 elements of 2 characters each?");
 
-                    return res.Substring(1);
-                }
+                        return res.Substring(1);
+                    }
             }
         }
 
@@ -193,7 +194,7 @@ namespace HexLoom
 
         public static void SetWindowTitle(Window window, string title)
         {
-            if(window == null)
+            if (window == null)
                 return;
 
             string versionString = AppInfo.VersionString;
@@ -266,6 +267,16 @@ namespace HexLoom
             }
 
             return groupArr;
+        }
+
+        public static void SetHexEditor(HexEditor.HexEditor hexEditor, Byte[] data, ProjectSettings settings)
+        {
+            if(hexEditor == null)
+                return;
+
+            hexEditor.SetBinaryData(data);
+            hexEditor.SetBaseAddress(settings.BaseAddress);
+            hexEditor._IsBigEndian = settings.IsBigEndian;
         }
     }
 }

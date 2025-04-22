@@ -121,12 +121,8 @@ namespace HexLoom
             if (_binaryDataOriginal.Length == 0 || _binaryDataEdited.Length == 0)
                 return;
 
-            HexEditorOriginal.SetBinaryData(_binaryDataOriginal);
-            HexEditorOriginal.SetBaseAddress(_projectSettings.BaseAddress);
-            HexEditorOriginal._IsBigEndian = _projectSettings.IsBigEndian;
-            HexEditorEdited.SetBinaryData(_binaryDataEdited);
-            HexEditorEdited.SetBaseAddress(_projectSettings.BaseAddress);
-            HexEditorEdited._IsBigEndian = _projectSettings.IsBigEndian;
+            Helpers.SetHexEditor(HexEditorOriginal, _binaryDataOriginal, _projectSettings);
+            Helpers.SetHexEditor(HexEditorEdited, _binaryDataEdited, _projectSettings);
         }
 
         private void onApplyClicked(object sender, EventArgs e)
