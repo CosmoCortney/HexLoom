@@ -84,52 +84,8 @@ namespace HexLoom
             if (!_projectOpen || !_ProjectChanged)
                 return;
 
-            JObject project = new JObject();
-            project["ProjectName"] = _projectSettings.ProjectName;
-            project["InputFilePath"] = _projectSettings.InputFilePath;
-            project["OutputFilePath"] = _projectSettings.OutputFilePath;
-            project["BaseAddress"] = _projectSettings.BaseAddress;
-            project["IsBigEndian"] = _projectSettings.IsBigEndian;
-            var groupArr = new JArray();
-
-            foreach (var groupS in EntityGroupStack.Children)
-            {
-                if (groupS is not EntityGroup)
-                    return;
-
-                var entityGroup = groupS as EntityGroup;
-
-                var groupObj = new JObject();
-                groupObj["GroupName"] = entityGroup._Name;
-                groupObj["Collapse"] = entityGroup._Collapse;
-                var entityArr = new JArray();
-
-                foreach (var entityS in entityGroup._EntityStack.Children)
-                {
-                    if (entityS is not Entity)
-                        return;
-
-                    var entity = entityS as Entity;
-                    var entityObj = new JObject();
-                    entityObj["EntityName"] = entity._EntityName;
-                    entityObj["PrimaryType"] = entity._PrimaryType;
-                    entityObj["SecondaryType"] = entity._SecondaryType;
-                    entityObj["Offset"] = entity._EntityOffset;
-                    entityObj["Apply"] = entity._Apply;
-
-                    if (entity._PrimaryType == (Int32)PrimaryTypes.PRIMITIVE && entity._SecondaryType == (Int32)PrimitiveTypes.BOOL)
-                        entityObj["Value"] = entity._EntityValueBool;
-                    else
-                        entityObj["Value"] = entity._EntityValue;
-
-                    entityArr.Add(entityObj);
-                }
-
-                groupObj["Entities"] = entityArr;
-                groupArr.Add(groupObj);
-            }
-
-            project["Groups"] = groupArr;
+            JObject project = Helpers.SerializeProjectSettings(_projectSettings);
+            project["Groups"] = Helpers.SerializeEntityGroups(EntityGroupStack.Children);
             System.IO.File.WriteAllText(_projectSettings.ProjectJsonPath, project.ToString());
             _ProjectChanged = false;
         }
