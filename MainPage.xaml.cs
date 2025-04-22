@@ -43,13 +43,17 @@ namespace HexLoom
 
         private async void onNewProjectMenuItemClicked(object sender, EventArgs e)
         {
-            var proj = new NewProjectPage();
-            proj.Disappearing += OnNewProjectPageDisappearing;
-            await Navigation.PushModalAsync(proj);
+            await openSettingsPage(true);
         }
+
         private async void onChangeSettingsMenuItemClicked(object sender, EventArgs e)
         {
-            var proj = new NewProjectPage(_projectSettings);
+            await openSettingsPage(false);
+        }
+
+        private async Task openSettingsPage(bool newProject)
+        {
+            var proj = newProject ? new NewProjectPage() : new NewProjectPage(_projectSettings);
             proj.Disappearing += OnNewProjectPageDisappearing;
             await Navigation.PushModalAsync(proj);
         }
@@ -256,7 +260,6 @@ namespace HexLoom
                         return;
 
                     var entity = entityS as Entity;
-
 
                     if (entity._Apply)
                     {
