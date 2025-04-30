@@ -80,7 +80,7 @@ namespace HexLoom
             return groupArr;
         }
 
-        public static void DeSerializeEntityGroups(System.Collections.Generic.IList<IView> children, JObject settings)
+        public static void DeSerializeEntityGroupsToView(System.Collections.Generic.IList<IView> children, JObject settings)
         {
             children.Clear();
 
@@ -91,6 +91,21 @@ namespace HexLoom
 
                 children.Add(new EntityGroup(group));
             }
+        }
+
+        public static List<IView> DeSerializeEntityGroups(JObject settings)
+        {
+            List<IView> groups = new List<IView>();
+
+            foreach (Newtonsoft.Json.Linq.JObject group in settings["Groups"])
+            {
+                if (group == null)
+                    return groups;
+
+                groups.Add(new EntityGroup(group));
+            }
+
+            return groups;
         }
     }
 }

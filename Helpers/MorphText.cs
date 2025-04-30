@@ -55,17 +55,16 @@ namespace HexLoom
             return length;
         }
 
-        public static byte[] ConvertString(Entity entity)
+        public static byte[] ConvertString(string valueStr, Int32 secondaryType)
         {
-            Int32 type = entity._SecondaryType;
             byte[] value;
 
-            switch (type)
+            switch (secondaryType)
             {
                 case (Int32)StringTypes.UTF16LE:
                 case (Int32)StringTypes.UTF16BE:
                 {
-                    IntPtr resultPtr = ConvertWcharStringToWcharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
+                    IntPtr resultPtr = ConvertWcharStringToWcharStringUnsafe(valueStr.ToCharArray(), (Int32)StringTypes.UTF16LE, secondaryType);
                     int length = GetCharArrayLength(resultPtr);
                     value = new byte[length * 2];
                     Marshal.Copy(resultPtr, value, 0, length * 2);
@@ -74,7 +73,7 @@ namespace HexLoom
                 case (Int32)StringTypes.UTF32LE:
                 case (Int32)StringTypes.UTF32BE:
                 {
-                    IntPtr resultPtr = ConvertWcharStringToU32charStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
+                    IntPtr resultPtr = ConvertWcharStringToU32charStringUnsafe(valueStr.ToCharArray(), (Int32)StringTypes.UTF16LE, secondaryType);
                     int length = GetUIntArrayLength(resultPtr);
                     value = new byte[length * 4];
                     Marshal.Copy(resultPtr, value, 0, length * 4);
@@ -82,7 +81,7 @@ namespace HexLoom
                 } break;
                 default: //single and variable byte char strings
                 {
-                    IntPtr resultPtr = ConvertWcharStringToCharStringUnsafe(entity._EntityValue.ToCharArray(), (Int32)StringTypes.UTF16LE, type);
+                    IntPtr resultPtr = ConvertWcharStringToCharStringUnsafe(valueStr.ToCharArray(), (Int32)StringTypes.UTF16LE, secondaryType);
                     int length = GetByteArrayLength(resultPtr);
                     value = new byte[length];
                     Marshal.Copy(resultPtr, value, 0, length);
@@ -91,6 +90,11 @@ namespace HexLoom
             }
 
             return value;
+        }
+
+        public static byte[] ConvertString(Entity entity)
+        {
+            return ConvertString(entity._EntityValue.ToString(), entity._SecondaryType);
         }
     }
 }

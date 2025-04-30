@@ -199,7 +199,7 @@ namespace HexLoom
 
                 _projectSettings = JsonHelpers.DeSerializeProjectSettings(project);
                 _projectSettings.ProjectJsonPath = result.FullPath;
-                JsonHelpers.DeSerializeEntityGroups(EntityGroupStack.Children, project);
+                JsonHelpers.DeSerializeEntityGroupsToView(EntityGroupStack.Children, project);
                 setMenuItemStates(false, true, false, false, true, true);
 
                 if (!loadBinary())
@@ -223,73 +223,24 @@ namespace HexLoom
 
         private async void applyChanges()
         {
-            foreach (var groupS in EntityGroupStack.Children)
+            try
             {
-                if (groupS is not EntityGroup)
-                    return;
+                EditorHelpers.ApplyChanges(EntityGroupStack.Children, HexEditorEdited, _projectSettings.IsBigEndian);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Cannot not set value.\nException thrown: " + ex.Message, "OK");
+                return;
+            }
 
-                var entityGroup = groupS as EntityGroup;
-
-                foreach (var entityS in entityGroup._EntityStack.Children)
-                {
-                    if (entityS is not Entity)
-                        return;
-
-                    var entity = entityS as Entity;
-
-                    if (entity._Apply)
-                    {
-                        try
-                        {
-                            switch (entity._PrimaryType)
-                            {
-                                case (Int32)PrimaryTypes.ARRAY:
-                                    EditorHelpers.SetArrayValues(HexEditorEdited, entity, _projectSettings.IsBigEndian);
-                                break;
-                                case (Int32)PrimaryTypes.COLOR:
-                                    EditorHelpers.SetColorValue(HexEditorEdited, entity, _projectSettings.IsBigEndian);
-                                break;
-                                case (Int32)PrimaryTypes.STRING:
-                                    EditorHelpers.SetStringValue(HexEditorEdited, entity);
-                                break;
-                                default: //PRIMITIVE
-                                    EditorHelpers.SetPrimitiveValues(HexEditorEdited, entity, _projectSettings.IsBigEndian);
-                                break;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            await DisplayAlert("Error", "Ill-formed value in " + entity._EntityName + ".\nException thrown: " + ex.Message, "OK");
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            switch (entity._PrimaryType)
-                            {
-                                case (Int32)PrimaryTypes.ARRAY:
-                                    EditorHelpers.UnsetSingleArrayValue(HexEditorOriginal, HexEditorEdited, entity);
-                                break;
-                                case (Int32)PrimaryTypes.COLOR:
-                                    EditorHelpers.UnsetSingleColorValue(HexEditorOriginal, HexEditorEdited, entity);
-                                break;
-                                case (Int32)PrimaryTypes.STRING:
-                                    EditorHelpers.UnsetSingleStringValue(HexEditorOriginal, HexEditorEdited, entity);
-                                break;
-                                default: //PRIMITIVE
-                                    EditorHelpers.UnsetSinglePrimitiveValue(HexEditorOriginal, HexEditorEdited, entity);
-                                break;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            await DisplayAlert("Error", "Cannot not unset value " + entity._EntityName + ".\nException thrown: " + ex.Message, "OK");
-                            return;
-                        }
-                    }
-                }
+            try
+            {
+                EditorHelpers.UnApplyChanges(EntityGroupStack.Children, HexEditorOriginal, HexEditorEdited, false); //unapply disabled entities
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", "Cannot not unset value.\nException thrown: " + ex.Message, "OK");
+                return;
             }
         }
 
