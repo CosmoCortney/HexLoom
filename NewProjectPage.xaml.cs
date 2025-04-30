@@ -178,12 +178,12 @@ namespace HexLoom
 
             try
             {
-                var resultl = await CommunityToolkit.Maui.Storage.FolderPicker.PickAsync(default);
+                var result = await CommunityToolkit.Maui.Storage.FolderPicker.PickAsync(default);
 
-                if (resultl == null)
+                if (result?.Folder?.Path == null)
                     return;
 
-                string path = resultl.Folder.Path;
+                string path = result.Folder.Path;
                 string fileName = await Application.Current.MainPage.DisplayPromptAsync("New File", "Enter desired file name:", "OK", "Cancel", "newfile.bin");
 
                 if (fileName == null)
