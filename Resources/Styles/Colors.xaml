@@ -10,7 +10,9 @@
     <Color x:Key="HexLoomTextDisabled">#a8a8a8</Color>
     <Color x:Key="Goob">#0FA3B1</Color>
     <Color x:Key="Nope">#DF2935</Color>
+    <Color x:Key="NopePressed">#b01025</Color>
     <Color x:Key="HexLoomButtonBg">#353535</Color>
+    <Color x:Key="HexLoomButtonPressedBg">#232323</Color>
     <Color x:Key="HexLoomDisabledButtonBg">#181818</Color>
 
     <Color x:Key="Primary">#512BD4</Color>

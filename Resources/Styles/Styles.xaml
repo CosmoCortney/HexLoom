@@ -43,6 +43,11 @@
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="PointerOver" />
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{StaticResource HexLoomButtonPressedBg}" />
+                        </VisualState.Setters>
+                    </VisualState>
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
