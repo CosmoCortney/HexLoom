@@ -10,6 +10,7 @@ namespace HexLoom
         public App()
         {
             InitializeComponent();
+            UserAppTheme = AppTheme.Dark;
 
             Microsoft.Maui.Handlers.WindowHandler.Mapper.AppendToMapping(nameof(IWindow), (handler, view) =>
             {
